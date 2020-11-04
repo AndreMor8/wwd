@@ -21,6 +21,7 @@ global.antixsslinks = function (string = "") {
 };
 (async () => {
   const app = express();
+  await db();
   const session = require("express-session");
   const MongoStore = require("connect-mongo")(session);
   require("./strategies/discord.js");
