@@ -1,0 +1,40 @@
+<nav class="navbar is-warning is-fixed-top" role="navigation" aria-label="main navigation">
+
+  <div class="navbar-brand">
+    <div class="navbar-item">
+      <a href="/"><img src="/assets/icon.gif" width="auto"></img> Wow Wow Discord</a>
+    </div>
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu" id="navMenu">
+    <div class="navbar-start">
+      <a href="https://discord.gg/5qx9ZcV" class="navbar-item">
+        Server invite link
+      </a>
+    </div>
+    <div class="navbar-end">
+      <% if(logged) { %>
+      <div class="navbar-item">
+        <h1>Welcome, <%= antixss(username) %></h1>
+      </div>
+      <% } %>
+      <div class="navbar-item">
+        <div class="buttons">
+          <% if(logged) { %>
+          <form action="/auth/logout">
+            <button class="button is-primary is-rounded" style="font-size: 0.95em;" type="submit">Logout</button>
+          </form>
+          <% } else { %>
+          <form action="/auth/">
+            <button class="button is-primary is-rounded" style="font-size: 0.95em;" type="submit">Login</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
