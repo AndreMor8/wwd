@@ -4,6 +4,7 @@ const express = require("express");
 const passport = require("passport");
 const csrf = require('csurf');
 global.antixss = function (string = "") {
+  if(typeof string !== "string") return "123";
   string = string.replace('&', '&amp;');
   string = string.replace('<', '&lt;');
   string = string.replace('>', '&gt;');
@@ -13,6 +14,7 @@ global.antixss = function (string = "") {
   return string;
 };
 global.antixsslinks = function (string = "") {
+  if(typeof string !== "string") return "123";
   string = string.replace('<', '&lt;');
   string = string.replace('>', '&gt;');
   string = string.replace('"', '&quot;');
