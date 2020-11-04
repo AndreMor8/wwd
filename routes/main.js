@@ -68,7 +68,7 @@ router.get('/rules', (req, res) => {
 });
 
 router.get("/birthday-cards", (req, res) => {
-  res.redirect(301, "/wwd/birthday-cards/2020/");
+  res.redirect(301, "/birthday-cards/2020/");
 });
 
 router.get("/birthday-cards/:year", async (req, res) => {
@@ -298,9 +298,9 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
 router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
   const msgDocument = await wwr.find();
   if (req.query && req.query.delete) {
-    if (!msgDocument[req.query.delete]) return res.status(404).redirect("/wwd/wwr");
+    if (!msgDocument[req.query.delete]) return res.status(404).redirect("/wwr");
     else await msgDocument[req.query.delete].deleteOne();
-    return res.status(200).redirect("/wwd/wwr");
+    return res.status(200).redirect("/wwr");
   }
   const tosee = new Map();
   for (let i in msgDocument) {
@@ -322,7 +322,7 @@ router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
 router.get("/appeals", isLogged, isInWDD, isWWDAdmin, async (req, res) => {
   const banss = await bans.find();
   if (req.query && req.query.unban) {
-    if (!banss[req.query.unban]) return res.status(404).redirect("/wwd/appeals");
+    if (!banss[req.query.unban]) return res.status(404).redirect("/appeals");
     else {
       const doc = banss[req.query.unban];
       await fetch("https://discord.com/api/v6/guilds/402555684849451028/bans/" + banss[req.query.unban].userId, {
@@ -332,13 +332,13 @@ router.get("/appeals", isLogged, isInWDD, isWWDAdmin, async (req, res) => {
         }
       });
       await banss[req.query.unban].deleteOne();
-      return res.status(200).redirect("/wwd/appeals");
+      return res.status(200).redirect("/appeals");
     }
   }
   if (req.query && req.query.delete) {
-    if (!banss[req.query.delete]) return res.status(404).redirect("/wwd/appeals");
+    if (!banss[req.query.delete]) return res.status(404).redirect("/appeals");
     await banss[req.query.delete].deleteOne();
-    return res.status(200).redirect("/wwd/appeals");
+    return res.status(200).redirect("/appeals");
   }
   const tosee = new Map();
   for (let i in banss) {
@@ -364,7 +364,7 @@ router.get("/birthday-cards/admin", isAuthorizedAdmin, async (req, res) => {
   const tosee = new Map();
   if(req.query && req.query.approve) {
     const doc = docs[req.query.approve]
-    if(!doc) return res.status(404).redirect("/wwd/birthday-cards/admin/");
+    if(!doc) return res.status(404).redirect("/birthday-cards/admin/");
     if(doc.anon) {
       await doc.updateOne({ published: true });
       const embed = new Discord.MessageEmbed()
@@ -379,7 +379,7 @@ router.get("/birthday-cards/admin", isAuthorizedAdmin, async (req, res) => {
       console.log(await utils.createMessage("746852649248227328", {
         embed: embed
       }));
-      return res.redirect("/wwd/birthday-cards/admin/")
+      return res.redirect("/birthday-cards/admin/")
     } else {
       const user = await DiscordUser.findOne({ discordId: doc.userID });
       await doc.updateOne({ published: true });
@@ -395,13 +395,13 @@ router.get("/birthday-cards/admin", isAuthorizedAdmin, async (req, res) => {
       console.log(await utils.createMessage("746852649248227328", {
         embed: embed
       }))
-      return res.redirect("/wwd/birthday-cards/admin/")
+      return res.redirect("/birthday-cards/admin/")
     }
   } else if(req.query && req.query.delete) {
     const doc = docs[req.query.delete]
-    if(!doc) return res.status(404).redirect("/wwd/birthday-cards/admin/");
+    if(!doc) return res.status(404).redirect("/birthday-cards/admin/");
     await doc.deleteOne();
-    return res.redirect("/wwd/birthday-cards/admin/");
+    return res.redirect("/birthday-cards/admin/");
   }
   for(let i in docs) {
     const user = await DiscordUser.findOne({ discordId: docs[i].userID });
@@ -464,7 +464,7 @@ router.post("/birthday-cards/submit", isAuthorized, async (req, res) => {
       embed.addField("Additional", Discord.Util.splitMessage(doc.additional, { maxLength: 1000 })[0]);
     }
     embed.addField("Requested anonymity?", doc.anon ? "Yes" : "No")
-    .addField("URL", "https://gidgetbot.herokuapp.com/wwd/birthday-cards/admin")
+    .addField("URL", "https://gidgetbot.herokuapp.com/birthday-cards/admin")
     
     await utils.createMessage("746852433644224562", {
       embed: embed

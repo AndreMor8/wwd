@@ -10,7 +10,7 @@
     <span style="background-color: #fff780; padding: 3px;">You have already sent your letter. It will appear in #wubbzy_birthday_cards when properly reviewed</span>
 </h2>
   <% } else { %>
-  <form action="/wwd/birthday-cards/submit" method="post">
+  <form action="/birthday-cards/submit" method="post">
 <div class="field" style="margin-top: 20px; max-width: 50em">
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <div class="control">

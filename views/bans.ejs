@@ -10,7 +10,7 @@
         <h2 class="subtitle" style="margin-top: 10px">
             Ban reason: <%= antixss(ban.reason) %>
         </h2>
-        <form action="/wwd/appeal" method="post">
+        <form action="/appeal" method="post">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="field">
                 <div class="control">
