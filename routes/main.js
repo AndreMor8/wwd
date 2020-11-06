@@ -43,6 +43,19 @@ function isWWDVerified(req, res, next) {
 
 ///////////////////////////////////// NON-LOGGED USERS //////////////////////////////////////
 
+router.get("/about", async (req, res) => {
+  res.render("about", {
+    username: req.user ? req.user.username : "stranger",
+    csrfToken: req.csrfToken(),
+    avatar: req.user ? req.user.avatar : null,
+    inserver: req.user ? (req.user.guilds.find(e => e.id === "402555684849451028") ? true : false) : false,
+    logged: req.user ? true : false,
+    verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
+    antixss,
+    antixsslinks
+  });
+});
+
 router.get('/', async (req, res) => {
   res.render("wwd", {
     username: req.user ? req.user.username : "stranger",

@@ -62,13 +62,14 @@ global.antixsslinks = function (string = "") {
     } else next();
   });
   app.use("*", function (req, res) {
-    res.status(404).render("404", {
+    if(req.method !== "GET") res.sendStatus(405);
+    else res.status(404).render("404", {
       username: req.user ? req.user.username : "stranger",
       csrfToken: req.csrfToken(),
       logged: Boolean(req.user),
       antixss,
       antixsslinks
-    })
+    });
   });
   // listen for requests :)
   const listener = app.listen(process.env.PORT, () => {

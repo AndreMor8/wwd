@@ -20,6 +20,8 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
 }
 
 .background2 {

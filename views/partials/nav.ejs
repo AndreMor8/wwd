@@ -1,4 +1,4 @@
-<nav class="navbar is-warning is-fixed-top" role="navigation" aria-label="main navigation">
+<nav class="navbar is-warning is-fixed-bottom" role="navigation" aria-label="main navigation">
 
   <div class="navbar-brand">
     <div class="navbar-item">
@@ -12,11 +12,17 @@
   </div>
   <div class="navbar-menu" id="navMenu">
     <div class="navbar-start">
+      <a href="/about" class="navbar-item">
+        About us
+      </a>
       <a href="https://discord.gg/5qx9ZcV" class="navbar-item">
         Server invite link
       </a>
     </div>
     <div class="navbar-end">
+      <a href="mailto:admins@wubb.ga" class="navbar-item">
+        admins@wubb.ga
+      </a>
       <% if(logged) { %>
       <div class="navbar-item">
         <h1>Welcome, <%= antixss(username) %></h1>
