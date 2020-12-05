@@ -94,3 +94,9 @@ footer {
   border-style: groove;
   border-color: lightsalmon;
 }
+
+#game-content {
+    text-align: center;
+    margin-top: 17vh;
+    width: calc(100vw);
+}

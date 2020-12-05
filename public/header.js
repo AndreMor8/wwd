@@ -1,3 +1,4 @@
+window.RufflePlayer = window.RufflePlayer || {};
 window.antixss = function (string = "") {
     string = string.replace('&', '&amp;');
     string = string.replace('<', '&lt;');
@@ -15,7 +16,6 @@ window.antixsslinks = function (string = "") {
     return string;
 };
 document.addEventListener("DOMContentLoaded", () => {
-    const arr = document.URL.substring(8).split("/");
     // Get all "navbar-burger" elements
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
     // Check if there are any navbar burgers
@@ -31,24 +31,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 $target.classList.toggle("is-active");
             });
         });
-    }
-    if (arr[1] === "dashboard" && arr[3]) {
-        for (const element of Object.values(document.getElementsByTagName("li"))) {
-            const { children } = element;
-            const tomodify = children.item(0);
-            const ar = tomodify.getAttribute("href").split("/");
-            if (ar[ar.length - 1] === arr[3]) {
-                tomodify.setAttribute("class", "is-active");
-                tomodify.removeAttribute("href");
-            }
-        }
-    }
-    if (arr[1] === "wwd" && document.body.hasAttribute("class")) {
-        document.getElementById("darkmode").remove()
-        const head = document.getElementsByTagName('head')[0];
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = '/wwd.css';
-        head.appendChild(link);
     }
 });

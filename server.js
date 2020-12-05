@@ -68,7 +68,8 @@ global.antixsslinks = function (string = "") {
       csrfToken: req.csrfToken(),
       logged: Boolean(req.user),
       antixss,
-      antixsslinks
+      antixsslinks,
+      othercontent: ""
     });
   });
   // listen for requests :)

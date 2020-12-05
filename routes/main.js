@@ -43,6 +43,19 @@ function isWWDVerified(req, res, next) {
 
 ///////////////////////////////////// NON-LOGGED USERS //////////////////////////////////////
 
+router.get("/games", async (req, res) => {
+  res.render("games", {
+    username: req.user ? req.user.username : "stranger",
+    csrfToken: req.csrfToken(),
+    avatar: req.user ? req.user.avatar : null,
+    inserver: req.user ? (req.user.guilds.find(e => e.id === "402555684849451028") ? true : false) : false,
+    logged: req.user ? true : false,
+    verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
+    antixss,
+    antixsslinks, othercontent: '<script src="/ruffle/ruffle.js"></script>\n<script src="/gameload.js"></script>'
+  });
+})
+
 router.get("/about", async (req, res) => {
   res.render("about", {
     username: req.user ? req.user.username : "stranger",
@@ -52,7 +65,7 @@ router.get("/about", async (req, res) => {
     logged: req.user ? true : false,
     verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
 });
 
@@ -65,7 +78,7 @@ router.get('/', async (req, res) => {
     logged: req.user ? true : false,
     verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
 });
 
@@ -76,7 +89,7 @@ router.get('/rules', (req, res) => {
     avatar: req.user ? req.user.avatar : null,
     logged: req.user ? true : false,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
 });
 
@@ -106,7 +119,7 @@ router.get("/birthday-cards/:year", async (req, res) => {
       authors: tosee,
       year,
       antixss,
-      antixsslinks
+      antixsslinks, othercontent: ""
     });
   } catch (err) {
     console.log(err);
@@ -130,7 +143,7 @@ router.get("/appeal", isLogged, async (req, res) => {
           logged: true,
           ban,
           antixss,
-          antixsslinks
+          antixsslinks, othercontent: ""
         })
       } else {
         res.status(403).send("You're not banned");
@@ -165,7 +178,7 @@ router.post("/appeal", isLogged, async (req, res) => {
       avatar: req.user.avatar,
       logged: true,
       antixss,
-      antixsslinks
+      antixsslinks, othercontent: ""
     })
   } catch (err) {
     res.status(500).send("Something happened" + err);
@@ -179,7 +192,7 @@ router.get("/wm/qualifiers", isLogged, async (req, res) => {
     avatar: req.user.avatar,
     logged: true,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
 });
 //END
@@ -195,7 +208,7 @@ router.get("/yourroles", isLogged, isInWDD, async (req, res) => {
         logged: true,
         roles: response,
         antixss,
-        antixsslinks
+        antixsslinks, othercontent: ""
       })
     } else {
       res.status(500).send("Something happened!");
@@ -216,7 +229,7 @@ router.get('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) => 
     logged: true,
     status: 403,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
   res.render('wwrsubmit', {
     username: req.user.username,
@@ -225,7 +238,7 @@ router.get('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) => 
     logged: true,
     status: 200,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   });
 })
 
@@ -239,7 +252,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
         logged: true,
         status: 400,
         antixss,
-        antixsslinks
+        antixsslinks, othercontent: ""
       });
       if (req.body.desc.length > 2000) return res.status(400).render('wwrsubmit', {
         username: req.user.username,
@@ -248,7 +261,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
         logged: true,
         status: 400,
         antixss,
-        antixsslinks
+        antixsslinks, othercontent: ""
       });
       const msgDocument = await wwr.findOne({ author: req.user.discordId });
       if (msgDocument) {
@@ -259,7 +272,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
           logged: true,
           status: 403,
           antixss,
-          antixsslinks
+          antixsslinks, othercontent: ""
         });
       }
       await new wwr({
@@ -282,7 +295,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
         logged: true,
         status: 201,
         antixss,
-        antixsslinks
+        antixsslinks, othercontent: ""
       });
     } else res.status(400).render('wwrsubmit', {
       username: req.user.username,
@@ -291,7 +304,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
       logged: true,
       status: 400,
       antixss,
-      antixsslinks
+      antixsslinks, othercontent: ""
     });
   } catch (err) {
     console.log(err)
@@ -302,7 +315,7 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
       logged: true,
       status: 500,
       antixss,
-      antixsslinks
+      antixsslinks, othercontent: ""
     });
   }
 });
@@ -328,7 +341,7 @@ router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
     ideas: msgDocument,
     authors: tosee,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   })
 })
 
@@ -367,7 +380,7 @@ router.get("/appeals", isLogged, isInWDD, isWWDAdmin, async (req, res) => {
     appeals: banss,
     authors: tosee,
     antixss,
-    antixsslinks
+    antixsslinks, othercontent: ""
   })
 })
 

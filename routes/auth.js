@@ -25,7 +25,7 @@ router.get('/', isAuthorized, (req, res, next) => {
         logged: true,
         username: req.user.username,
         antixss,
-        antixsslinks
+        antixsslinks, othercontent: ""
     });
 });
 

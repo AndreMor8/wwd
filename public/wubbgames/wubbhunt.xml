@@ -1,0 +1,21 @@
+<content>
+
+	<config>
+		<difficultyStep>0.25</difficultyStep> <!-- The higher this is the greater the 'jump' in spawn speed after eact difficultyDelay passes -->
+		<difficultyDelay>15</difficultyDelay> <!-- Number of seconds between difficulty increases, higher number is easier/slower -->
+		<butterflySpeed>30</butterflySpeed> <!-- Base butterfly speed that applies to X and Y motion -->
+		<butterflyRange>70</butterflyRange> <!-- Maximum amount of Y distance travelled per segment of travel -->
+		<butterflyForward>25</butterflyForward>  <!-- Additional speed that only affects the butterfly's forward motion-->
+		<butterflyDelay>40</butterflyDelay>  <!-- Lower number means butterflies spawn more frequently -->
+		<backgroundScrollSpeed>90</backgroundScrollSpeed>   <!-- Speed of scrolling -->
+		<backgroundScrollRange>150</backgroundScrollRange>  <!-- Number of pixels on either edge of screen where scrolling triggers -->
+		<backgroundScrollOffset>50</backgroundScrollOffset> <!-- Number of pixels on either edge of screen where scrolling stops -->
+		<leftScrollLimit>115</leftScrollLimit> <!-- Increase these to make the scene scroll further in each direction -->
+		<rightScrollLimit>203</rightScrollLimit> 
+		<basePoints>1</basePoints> <!-- Amount of points awarded for smallest accomplishment, scales all points -->
+		<maxLives>3</maxLives> <!-- Number of lives before the player dies, note only 3 are supported by the display-->
+		<arrowsOn>0</arrowsOn> <!-- Set to 1 to turn on arrows that flash if a target is off screen. Set to 0 to remove -->
+		<offScreenSpawn>0</offScreenSpawn> <!-- Set to 1 to allow off-screen spawning (much harder). Set to 0 to remove -->
+	</config>
+	
+</content>
