@@ -1,11 +1,7 @@
 let ruffle = window.RufflePlayer.newest();
-const containerStyle = `height: calc(100vh - 80px);
-width: calc(100vw - 100px);
-border-style: ridge;
+const containerStyle = `border-style: ridge;
 border-color: aqua;
-border-width: 10px;
-text-align: center;
-transform: translateX(1.5%)`;
+border-width: 10px;`;
 function load(link) {
     let container = document.getElementById("container");
     document.getElementById("game-content").style.display = "none";
