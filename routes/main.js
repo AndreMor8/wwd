@@ -211,7 +211,7 @@ router.get("/yourroles", isLogged, isInWDD, async (req, res) => {
 });
 //END
 ///////////////////////////////////// VERIFIED WWD MEMBERS //////////////////////////////////////
-router.get('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) => {
+/*router.get('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) => {
   const msgDocument = await wwr.findOne({ author: req.user.discordId });
   if (msgDocument) return res.status(403).render('wwrsubmit', {
     username: req.user.username,
@@ -301,10 +301,10 @@ router.post('/wwr/submit', isLogged, isInWDD, isWWDVerified, async (req, res) =>
       othercontent: ""
     });
   }
-});
+});*/
 //END
 ///////////////////////////////////// WWD ADMINS //////////////////////////////////////
-router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
+/*router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
   const msgDocument = await wwr.find();
   if (req.query && req.query.delete) {
     if (!msgDocument[req.query.delete]) return res.status(404).redirect("/wwr");
@@ -326,7 +326,7 @@ router.get('/wwr', isLogged, isInWDD, isWWDAdmin, async (req, res) => {
     othercontent: ""
   })
 })
-
+*/
 router.get("/appeals", isLogged, isInWDD, isWWDAdmin, async (req, res) => {
   const banss = await bans.find();
   if (req.query && req.query.unban) {
