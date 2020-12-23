@@ -15,29 +15,29 @@
           <% } else { %>
           <strong>
             <% if(authors.get(card.userID)) { %>
-            <%= antixss(authors.get(card.userID).username) + " (" + card.userID + ")" %>
+            <%= authors.get(card.userID).username + " (" + card.userID + ")" %>
             <% } %>
           </strong>
           <% } %>
           <small>To: Wubbzy</small>
           <br>
-          <%= antixss(card.card) %>
+          <%= card.card %>
         </p>
         <% if(card.additional) { %>
         <strong>Additional</strong><br>
-        <%= antixss(card.additional) %>
+        <%= card.additional %>
         <% } %>
       </div>
       <% if(admin) { %>
       <nav class="level is-mobile">
         <div class="level-left">
           <a class="level-item" aria-label="approve">
-            <a href="?approve=<%- i %>" class="button">Approve</a>
+            <a href="?approve=<%= i %>" class="button">Approve</a>
           </a>
         </div>
         <div class="level-left">
           <a class="level-item" aria-label="delete">
-            <a href="?delete=<%- i %>" class="button">Delete</a>
+            <a href="?delete=<%= i %>" class="button">Delete</a>
           </a>
         </div>
       </nav>

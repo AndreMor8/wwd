@@ -3,22 +3,6 @@ const db = require("./database.js");
 const express = require("express");
 const passport = require("passport");
 const csrf = require('csurf');
-global.antixss = function (string = "") {
-  string = string.replace('&', '&amp;');
-  string = string.replace('<', '&lt;');
-  string = string.replace('>', '&gt;');
-  string = string.replace('/', '&#x2F');
-  string = string.replace('"', '&quot;');
-  string = string.replace("'", '&#x27;');
-  return string;
-};
-global.antixsslinks = function (string = "") {
-  string = string.replace('<', '&lt;');
-  string = string.replace('>', '&gt;');
-  string = string.replace('"', '&quot;');
-  string = string.replace("'", '&#x27;');
-  return string;
-};
 (async () => {
   const app = express();
   await db();
@@ -67,8 +51,6 @@ global.antixsslinks = function (string = "") {
       username: req.user ? req.user.username : "stranger",
       csrfToken: req.csrfToken(),
       logged: Boolean(req.user),
-      antixss,
-      antixsslinks,
       othercontent: ""
     });
   });
