@@ -107,3 +107,15 @@ ruffle-player {
     text-align: center;
     transform: translate(1.5%, 0.5%);
 }
+
+.about-thing {
+    display: inline-block;
+    padding-left: 13vh;
+    padding-right: 13vh;
+}
+
+#wfamily {
+    font-size: 45px;
+    color: #FEE58D;
+    -webkit-text-stroke: 1px black;
+}
