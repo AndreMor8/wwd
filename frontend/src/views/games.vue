@@ -95,13 +95,18 @@ export default {
   document.getElementsByTagName("body")[0].style.backgroundImage =
       "url(https://vignette.wikia.nocookie.net/wubbzy/images/8/89/C199993F-3451-4BE3-9CD8-DC59E3F30008.jpeg/revision/latest?cb=20200327143747&format=original)";
   },
+  beforeRouteLeave(to, from, next) {
+    const container = document.getElementById("container");
+    container.style.display = "none";
+    next();
+  },
   methods: {
     load(link) {
       this.clicked = true;
-      let ruffle = window.RufflePlayer.newest();
-      let container = document.getElementById("container");
+      const ruffle = window.RufflePlayer.newest();
+      const container = document.getElementById("container");
       container.style.display = "block";
-      let player = ruffle.createPlayer();
+      const player = ruffle.createPlayer();
       player.container.style = containerStyle;
       container.appendChild(player);
       player.onfullscreenchange = function () {
