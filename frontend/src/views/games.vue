@@ -91,6 +91,10 @@ export default {
       clicked: false,
     };
   },
+  created() {
+  document.getElementsByTagName("body")[0].style.backgroundImage =
+      "url(https://vignette.wikia.nocookie.net/wubbzy/images/8/89/C199993F-3451-4BE3-9CD8-DC59E3F30008.jpeg/revision/latest?cb=20200327143747&format=original)";
+  },
   methods: {
     load(link) {
       this.clicked = true;
