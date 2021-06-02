@@ -1,6 +1,0 @@
-node_modules/
-.env
-package-lock.json
-.glitch-assets
-watch.json
-.vscode/

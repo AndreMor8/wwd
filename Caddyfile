@@ -1,0 +1,13 @@
+wubb.ga {
+	encode gzip
+	@back-end path /api/*
+	handle @back-end {
+		reverse_proxy 127.0.0.1:47550
+	}
+
+	handle {
+		root * /home/ubuntu/wwd/frontend/dist
+		try_files {path} /index.html
+		file_server
+	}
+}
