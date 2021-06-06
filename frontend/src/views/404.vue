@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="title wwd_main_title">Not Found</h1>
+    <h1 class="title main_title">Not Found</h1>
   </div>
 </template>
 

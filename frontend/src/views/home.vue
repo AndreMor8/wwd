@@ -1,98 +1,99 @@
 <template>
   <div>
-    <br />
-    <figure class="image is-128x128">
-      <img id="wwd_home_icon" src="/icon.gif" alt="wwd_home_icon" />
-    </figure>
-
-    <h1 id="wwd_home_title" class="title">Wow Wow Discord</h1>
-    <h2 id="wwd_home_subtitle" class="subtitle">
-      The best custom Wow! Wow! Wubbzy! server
+    <h1 id="home_title" class="main_title title">Welcome to Wubbworld!</h1>
+    <h2 class="subtitle" style="font-size: x-large">
+      <span class="home-color">We are a community of fans of the <i>Wow! Wow! Wubbzy!</i> show starting
+      from 2008.</span>
     </h2>
-    <span id="wwd_home_description">
-      Wow Wow Discord is a Discord server dedicated to existing and new Wubbzy
-      fans. Our goal is to bring fans together, relive childhood and provide a
-      space for Wubbzy to continue in our lives.
-    </span>
-    <div id="wwd_home_buttons" class="buttons">
-      <a v-if="joined" href="https://discord.com/channels/402555684849451028"
-        ><button class="button">Go to the server</button></a
-      >
-      <a v-if="!joined" href="https://discord.gg/5qx9ZcV"
-        ><button class="button">Join the server :)</button></a
-      >
-
-      <router-link to="/rules"
-        ><button class="button">Server rules</button></router-link
-      >
+    <p class="home-text">
+      <span class="home-color">Welcome to our website. We currently have 4 places where our fanatic (or
+      interested) community has been distributed.</span>
+    </p>
+    <br>
+    <p class="home-text">
+      <span class="home-color">Feel free to interact with them, especially if you are a fan of the
+      series. We need more interested!</span>
+    </p>
+    <p class="home-text">
+     <span class="home-color"> Are you a fan / do you remember the series / do you like it?<br /><b
+        >Easily join us :)</b
+      ></span>
+    </p>
+    <div class="buttons fix">
+      <h2 class="subtitle wfamily"><b>Sections in this page</b></h2>
       <router-link to="/birthday-cards"
-        ><button class="button">Wubbzy birthday cards</button></router-link
-      >
-
-      <router-link v-if="logged && !joined" to="/appeal"
-        ><button class="button">Appeal your ban</button></router-link
-      >
-
-      <router-link to="/wm-qualifiers"
-        ><button class="button">
-          What qualifies for Wubbzy Media?
+        ><button class="button home-button is-info">
+          Wubbzy birthday cards
         </button></router-link
       >
-      <!--<a v-if="admin" href="/appeals"><button class="button">Ban appeals</button></a>-->
+      <router-link to="/games"
+        ><button class="button home-button is-info">Games</button></router-link
+      >
+    </div>
+    <div class="buttons fix">
+      <h2 class="subtitle wfamily">
+        <b>Platforms or services where we are</b>
+      </h2>
+
+      <router-link to="/wubbzypedia"
+        ><button class="button home-button is-info">
+          Wubbzypedia
+        </button></router-link
+      >
+
+      <router-link to="/wwd"
+        ><button class="button home-button is-info">
+          Wow Wow Discord
+        </button></router-link
+      >
+
+      <a href="https://twitter.com/WubbzyWednesday"
+        ><button class="button home-button is-link">@WubbzyWednesday</button></a
+      >
+
+      <a href="https://www.reddit.com/r/wubbzy"
+        ><button class="button home-button is-link">r/wubbzy</button></a
+      >
+      <a href="https://www.roblox.com/groups/7054763/Wow-Wow-Roblox"
+        ><button class="button home-button is-link">Wow Wow Roblox</button></a
+      >
     </div>
   </div>
 </template>
 
 <style>
-#wwd_home_icon {
-  margin-top: 4px;
-  border-color: #18191c;
-  border-style: solid;
-  background-color: #18191c;
-}
-#wwd_home_title {
-  margin-top: 15px;
+#home_title {
+  color: #fcf04e;
+  -webkit-text-stroke: 1.5px black;
 }
 
-#wwd_home_subtitle {
-  font-size: 40px;
-  margin-top: -15px;
-  margin-bottom: 10px;
+.wfamily {
+  font-size: 32px;
+  color: #14ff27;
+  -webkit-text-stroke: 1.3px black;
 }
-#wwd_home_description {
-  padding: 3px;
-  margin-top: 10px;
-  background-color: rgba(243, 247, 129, 0.87);
+
+.home-button {
+  font-size: 17px;
+}
+
+.home-text {
   font-size: 20px;
 }
-#wwd_home_buttons {
-  margin: auto;
-  padding: 10px;
-  margin-top: 10px;
-  display: block;
+
+.home-color {
+  background-color: #ffe260f3;
+  padding: 5px;
+  border-radius: 0.5em;
 }
-#wwd_home_buttons a {
-  padding: 2px;
-}
+
 </style>
 
 <script>
 export default {
-  data() {
-    return {
-      logged: this.$root.logged,
-      joined: this.$root.user.inserver,
-      verified: this.$root.user.verified,
-      admin: this.$root.user.admin,
-    };
-  },
   created() {
     document.getElementsByTagName("body")[0].style.backgroundImage =
-      "url(https://vignette.wikia.nocookie.net/wubbzy/images/8/89/C199993F-3451-4BE3-9CD8-DC59E3F30008.jpeg/revision/latest?cb=20200327143747&format=original)";
-    this.logged = this.$root.logged;
-    this.joined = this.$root.user.inserver;
-    this.verified = this.$root.user.verified;
-    this.admin = this.$root.user.admin;
+      "url(https://vignette.wikia.nocookie.net/wubbzy/images/1/18/TMOADTWubbClub.jpeg/revision/latest?cb=20210302203247&format=original)";
   },
 };
 </script>

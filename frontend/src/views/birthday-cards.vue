@@ -1,29 +1,19 @@
 <template>
   <div>
-    <h1 v-if="!loaded" class="title wwd_main_title">Loading...</h1>
+    <h1 v-if="!loaded" class="title main_title">Loading...</h1>
     <div v-else>
-      <h1 class="title wwd_main_title">Birthday cards</h1>
+      <h1 class="title main_title">Birthday cards</h1>
       <h2 class="subtitle">Select a year</h2>
-      <div
-        id="wwd_birthday_buttons"
-        class="buttons"
-        v-for="year_obj in available_years"
-        :key="year_obj.year"
-      >
-        <year :year="year_obj"></year>
+      <div id="wwd_birthday_buttons" class="buttons fix">
+        <year
+          v-for="year_obj in available_years"
+          :key="year_obj.year"
+          :year="year_obj"
+        ></year>
       </div>
     </div>
   </div>
 </template>
-
-<style>
-#wwd_birthday_buttons {
-  margin: auto;
-  padding: 10px;
-  margin-top: 10px;
-  display: block;
-}
-</style>
 
 <script>
 import year from "../partials/year.vue";

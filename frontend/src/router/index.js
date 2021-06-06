@@ -1,24 +1,32 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/home.vue'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
     component: function () {
-      return import('../views/about.vue');
+      return import('../views/home.vue');
     }
   },
   {
-    path: '/rules',
+    path: '/wwd',
+    name: 'wwd',
+    component: function () {
+      return import('../views/wwd.vue');
+    }
+  },
+  {
+    path: '/wubbzypedia',
+    name: 'wubbzypedia',
+    component: function () {
+      return import('../views/wubbzypedia.vue');
+    }
+  },
+  {
+    path: '/wwd/rules',
     name: "rules",
     component: function () {
-      return import('../views/rules.vue');
+      return import('../views/wwd/rules.vue');
     }
   },
   {
@@ -29,10 +37,10 @@ const routes = [
     }
   },
   {
-    path: '/wm-qualifiers',
+    path: '/wwd/wm-qualifiers',
     name: "wm-qualifiers",
     component: function () {
-      return import('../views/wmqualifiers.vue');
+      return import('../views/wwd/wmqualifiers.vue');
     }
   },
   {
@@ -50,10 +58,10 @@ const routes = [
     }
   },
   {
-    path: '/appeal',
+    path: '/wwd/appeal',
     name: "appeal",
     component: function () {
-      return import('../views/appeal.vue');
+      return import('../views/wwd/appeal.vue');
     }
   },
   {
@@ -68,6 +76,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
-export default router
+export default router;

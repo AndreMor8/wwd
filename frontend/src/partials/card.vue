@@ -1,5 +1,5 @@
 <template>
-    <article class="media">
+    <article class="media birthday">
       <div class="media-left" v-if="!!avatar">
         <figure class="image is-64x64">
           <img

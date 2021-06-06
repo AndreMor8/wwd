@@ -6,7 +6,7 @@
   >
     <div class="navbar-brand">
       <div class="navbar-item">
-        <router-link to="/"><img src="/icon.gif" alt="wwd_icon" /></router-link>
+        <router-link to="/"><img src="/img/icon.gif" alt="wwd_icon" /></router-link>
       </div>
       <a
         role="button"
@@ -22,14 +22,15 @@
     </div>
     <div class="navbar-menu" id="navMenu">
       <div class="navbar-start">
-        <router-link to="/about" class="navbar-item"> About us </router-link>
+        <a href="https://archive.wubbworld.xyz" class="navbar-item">
+          Archives
+        </a>
         <a href="https://discord.gg/5qx9ZcV" class="navbar-item">
           Server invite link
         </a>
       </div>
       <div class="navbar-end">
-        <router-link to="/games" class="navbar-item"> Games </router-link>
-        <a href="mailto:admins@wubb.ga" class="navbar-item"> admins@wubb.ga </a>
+        <a href="mailto:admins@wubbworld.xyz" class="navbar-item"> admins@wubbworld.xyz </a>
 
         <div v-if="logged" class="navbar-item">
           <h1>Welcome, {{ tag }}</h1>

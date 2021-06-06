@@ -1,8 +1,8 @@
 <template>
-  <h1 v-if="invalid" class="subtitle wwd_main_title">Invalid year!</h1>
-  <h1 v-else-if="!loaded" class="title wwd_main_title">Loading...</h1>
+  <h1 v-if="invalid" class="subtitle main_title">Invalid year!</h1>
+  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
   <div v-else>
-    <h1 id="birthday_title" class="title wwd_main_title">
+    <h1 id="birthday_title" class="title main_title">
       Birthday cards for Wubbzy! ({{ year }})
     </h1>
     <div v-if="!!cards.length">
@@ -25,6 +25,10 @@
 </template>
 
 <style>
+.birthday {
+  text-align: left;
+}
+
 #birthday_title {
   color: #f0e285;
   -webkit-text-stroke: 1px black;

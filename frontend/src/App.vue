@@ -2,7 +2,7 @@
   <div align="center">
     <router-view v-if="loaded" />
     <div v-else>
-      <h1 class="title wwd_main_title">Loading...</h1>
+      <h1 class="title main_title">Loading...</h1>
     </div>
     <footer v-if="loaded">
       <navbar :logged="logged" :tag="user.tag"></navbar>
@@ -19,9 +19,10 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
 }
 
-.wwd_main_title {
+.main_title {
   padding-top: 20px;
   padding-bottom: 20px;
   font-size: 3em;
@@ -49,6 +50,17 @@ footer {
 
 #container {
   margin: 1em;
+}
+
+.buttons.fix {
+  margin: auto;
+  padding: 10px;
+  margin-top: 10px;
+  display: block;
+}
+
+.buttons.fix a {
+  padding: 2px;
 }
 
 </style>
