@@ -13,7 +13,7 @@ router.use("/auth", auth);
 
 router.use(async function (req, res, next) {
   if (req.user) {
-    const guilds = await utils.getUserGuilds(req.user.discordId);
+    const guilds = await utils.getUserGuilds(req.user.discordId) || [];
     req.user.guilds = guilds;
   }
   next();
@@ -135,7 +135,7 @@ router.post("/appeal", isLogged, async (req, res) => {
         .setTitle("New ban appeal")
         .setDescription(req.body.reason)
         .addField("Additional", req.body.additional || "*No additional*")
-        .setAuthor(`${req.user.username} (${req.user.discordId})`, req.user.avatar)
+        .setAuthor(`${req.user.username} (${req.user.discordId})`, utils.getAvatar(req.user))
     });
     res.status(201).json({ status: 201 });
   } catch (err) {
