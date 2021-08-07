@@ -12,7 +12,7 @@ export default {
     };
   },
   created: function () {
-    document.getElementsByTagName("body")[0].style.backgroundImage = "none";
+    document.body.className = "";
     const router = this.$router;
     this.timeout = setTimeout(() => router.replace("/"), 4000);
   },

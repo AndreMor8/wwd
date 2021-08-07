@@ -2,7 +2,17 @@
   <h1 v-if="invalid" class="subtitle main_title">Invalid year!</h1>
   <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
   <div v-else>
-    <h1 id="birthday_title" class="title main_title">
+    <router-link
+      v-if="logged && button"
+      to="/birthday-cards/submit"
+      style="right: 0; padding-right: 1em; padding-top: 1em; position: absolute"
+    >
+      <button class="button is-info is-light">Add new birthday card</button>
+    </router-link>
+    <h1
+      class="birthday_title title main_title"
+      style="text-align: center; margin-bottom: 15px"
+    >
       Birthday cards for Wubbzy! ({{ year }})
     </h1>
     <div v-if="!!cards.length">
@@ -19,7 +29,11 @@
       </div>
     </div>
     <div v-else>
-      <h2 class="subtitle">Nothing yet :(</h2>
+      <b
+        ><h2 class="subtitle" style="font-size: 2em">
+          Nothing yet :( Let's add one!
+        </h2></b
+      >
     </div>
   </div>
 </template>
@@ -27,11 +41,6 @@
 <style>
 .birthday {
   text-align: left;
-}
-
-#birthday_title {
-  color: #f0e285;
-  -webkit-text-stroke: 1px black;
 }
 </style>
 
@@ -45,11 +54,13 @@ export default {
       cards: [],
       year: this.$route.params.year,
       invalid: false,
+      button: false,
+      logged: this.$root.logged,
     };
   },
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage =
-      "url(https://vignette.wikia.nocookie.net/wubbzy/images/1/17/Birthday_Birthday_-_Capture_24.png/revision/latest?cb=20190905005643&format=original)";
+    document.body.className = "birthdaycards";
+    this.logged = this.$root.logged;
     this.getCards();
   },
   methods: {
@@ -57,9 +68,8 @@ export default {
       this.axios
         .get(`/api/birthday-cards/${this.$route.params.year}`)
         .then((e) => {
-          for (const card of e.data) {
-            this.cards.push(card);
-          }
+          this.cards = e.data.cards;
+          this.button = e.data.enabled;
           this.loaded = true;
         })
         .catch(() => {

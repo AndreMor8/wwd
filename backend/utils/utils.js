@@ -213,6 +213,7 @@ module.exports = {
     if (!isNaN(retrys) && !isNaN(retryafter)) {
       if (parseInt(retrys) < 1) await new Promise(s => setTimeout(s, (Math.floor(parseInt(retryafter) * 1000) + 0.5)));
     }
+    if (!res.ok) throw (await res.json()).message;
     return await res.json();
   },
   getGuildChannels: async function (guildID) {
@@ -265,6 +266,7 @@ module.exports = {
     if (!isNaN(retrys) && !isNaN(retryafter)) {
       if (parseInt(retrys) < 1) await new Promise(s => setTimeout(s, (Math.floor(parseInt(retryafter) * 1000) + 0.5)));
     }
+    if (!res.ok) throw (await res.json()).message;
     return res.json();
   },
   urlRegex: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/gm

@@ -1,9 +1,7 @@
 <template>
   <div>
     <div>
-      <h1 class="main_title title">
-        What qualifies for Wubbzy Media?
-      </h1>
+      <h1 class="main_title title">What qualifies for Wubbzy Media?</h1>
       <h2 class="subtitle" style="font-size: 1.9em">Publication + role</h2>
     </div>
     <ol class="wm_list_style">
@@ -63,7 +61,7 @@
 <script>
 export default {
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage = "none";
-  }
-}
+    document.body.className = "";
+  },
+};
 </script>

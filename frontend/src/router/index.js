@@ -51,6 +51,13 @@ const routes = [
     }
   },
   {
+    path: "/birthday-cards/submit",
+    name: "birthday-cards_submit",
+    component: function () {
+      return import('../views/birthday/submit.vue');
+    }
+  },
+  {
     path: '/birthday-cards/:year',
     name: "birthday-cards_final",
     component: function () {

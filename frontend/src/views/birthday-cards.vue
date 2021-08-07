@@ -2,7 +2,19 @@
   <div>
     <h1 v-if="!loaded" class="title main_title">Loading...</h1>
     <div v-else>
-      <h1 class="title main_title">Birthday cards</h1>
+      <router-link
+        v-if="logged && button"
+        to="/birthday-cards/submit"
+        style="right: 0; padding-right: 1em; padding-top: 1em; position: absolute"
+      >
+        <button class="button is-info is-light">Add new birthday card</button>
+      </router-link>
+      <h1
+        class="title main_title"
+        style="text-align: center; margin-bottom: 15px"
+      >
+        Birthday cards
+      </h1>
       <h2 class="subtitle">Select a year</h2>
       <div id="wwd_birthday_buttons" class="buttons fix">
         <year
@@ -23,18 +35,20 @@ export default {
     return {
       loaded: false,
       available_years: [],
+      button: false,
+      logged: this.$root.logged
     };
   },
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage = "none";
+    document.body.className = "";
+    this.logged = this.$root.logged;
     this.getYears();
   },
   methods: {
     getYears() {
       this.axios.get("/api/birthday-cards").then((e) => {
-        for (const year of e.data) {
-          this.available_years.push(year);
-        }
+        this.available_years = e.data;
+        this.button = e.data.some((a) => a.enabled);
         this.loaded = true;
       });
     },

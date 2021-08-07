@@ -76,8 +76,7 @@
 <script>
 export default {
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage =
-      "url(https://vignette.wikia.nocookie.net/wubbzy/images/8/8f/All_wubbzys_from_season_2.jpg/revision/latest?cb=20131209204702&format=original)";
+    document.body.className = "";
   },
 };
 </script>

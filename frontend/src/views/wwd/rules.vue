@@ -127,7 +127,7 @@
 <script>
 export default {
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage = "none";
+   document.body.className = "";
   },
 };
 </script>

@@ -22,6 +22,22 @@ body {
   background-position: center;
 }
 
+.main {
+  background-image: url("./assets/main.jpg");
+}
+
+.wwd {
+  background-image: url("./assets/wwd.jpg");
+}
+
+.birthdaycards {
+  background-image: url("./assets/birthdaycards.png");
+}
+
+.birthdaysubmit {
+  background-image: url("./assets/birthdaysubmit.png");
+}
+
 .main_title {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -45,7 +61,7 @@ footer {
   margin-bottom: 20px;
 }
 .field {
-  margin: 1em;   
+  margin: 1em;
 }
 
 #container {
@@ -63,6 +79,10 @@ footer {
   padding: 2px;
 }
 
+.birthday_title {
+  color: #f0e285;
+  -webkit-text-stroke: 1px black;
+}
 </style>
 
 <script>

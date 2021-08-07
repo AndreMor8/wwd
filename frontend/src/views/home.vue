@@ -92,8 +92,7 @@
 <script>
 export default {
   created() {
-    document.getElementsByTagName("body")[0].style.backgroundImage =
-      "url(https://vignette.wikia.nocookie.net/wubbzy/images/1/18/TMOADTWubbClub.jpeg/revision/latest?cb=20210302203247&format=original)";
+    document.body.className = "main";
   },
 };
 </script>
