@@ -197,10 +197,18 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
   }
 });
 
-router.put("/birthday-cards/:docId", async (req, res) => {
+router.put("/birthday-cards/:docId/publish", async (req, res) => {
   if(req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
   const doc = await birthday.findByIdAndUpdate(req.params.docId, { $set: { published: true } }).lean();
+  if(doc) return res.status(201).json({ status: 201 });
+  else return res.status(404).json({ status: 404, message: "Card not found" });
+});
+
+router.put("/birthday-cards/:docId/reject", async (req, res) => {
+  if(req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
+
+  const doc = await birthday.findByIdAndDelete(req.params.docId).lean();
   if(doc) return res.status(201).json({ status: 201 });
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
