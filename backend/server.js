@@ -25,7 +25,7 @@ const csrf = require('csurf');
   );
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(csrf());
+  app.use(csrf({ ignoreMethods: ['GET', 'PUT', 'HEAD', 'OPTIONS'] }));
   app.use("/api", require("./routes/main"));
 
   app.use(function (err, req, res, next) {

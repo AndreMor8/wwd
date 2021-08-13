@@ -40,10 +40,10 @@
       <input v-if="!sended" class="button" type="submit" value="Submit" />
     </form>
   </div>
-  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
   <h1 v-else-if="!logged" class="title main_title">
     You must be logged before using this route!
   </h1>
+  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
   <h1 v-else-if="!enabled" class="title main_title">
     There is no enabled year where you can send cards.
   </h1>
