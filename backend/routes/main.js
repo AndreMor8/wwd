@@ -7,6 +7,7 @@ const utils = require('../utils/utils');
 const birthday = require("../models/birthday");
 const birthdayYears = require("../models/birthday-years");
 const auth = require("./auth.js");
+const e = require('express');
 
 router.use("/auth", auth);
 
@@ -88,7 +89,8 @@ router.get("/birthday-cards/:year", async (req, res) => {
       tosend_obj.card = docs[i].card;
       tosend_obj.additional = docs[i].additional;
       tosend_obj.userID = docs[i].userID;
-      if (!docs[i].userID) {
+      if (!docs[i].userID || docs[i].anon) {
+        tosend_obj.userID = null;
         tosend_obj.username = "Anonymous";
         tosend_obj.avatar = null;
         tosend.push(tosend_obj);
@@ -174,7 +176,7 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
     }
 
     await utils.createMessage("746852433644224562", {
-      embed: embed,
+      embed,
       components: [{
         type: 1,
         components: [{
@@ -198,18 +200,31 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
 });
 
 router.put("/birthday-cards/:docId/publish", async (req, res) => {
-  if(req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
+  if (req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
   const doc = await birthday.findByIdAndUpdate(req.params.docId, { $set: { published: true } }).lean();
-  if(doc) return res.status(201).json({ status: 201 });
+  if (doc) {
+    const user = await DiscordUser.findOne({ discordId: doc.userID }).lean();
+    const embed = new Discord.MessageEmbed()
+      .setTitle("New Wubbzy birthday card <:WubbzyParty:608094605296271382>")
+      .setDescription(Discord.Util.splitMessage(doc.card)[0] || "?")
+      .setTimestamp()
+      .setColor("RANDOM");
+    if (doc.anon) embed.setAuthor("Anonymous");
+    else embed.setAuthor(user.username, utils.getAvatar(user));
+    if (doc.additional) embed.addField("Additional", Discord.Util.splitMessage(doc.additional, { maxLength: 1024 })[0] || "?");
+
+    await utils.createMessage("746852649248227328", { embed });
+    return res.status(201).json({ status: 201 });
+  }
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
 
 router.put("/birthday-cards/:docId/reject", async (req, res) => {
-  if(req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
+  if (req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
   const doc = await birthday.findByIdAndDelete(req.params.docId).lean();
-  if(doc) return res.status(201).json({ status: 201 });
+  if (doc) return res.status(201).json({ status: 201 });
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
 
