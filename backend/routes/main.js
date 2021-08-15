@@ -220,11 +220,30 @@ router.put("/birthday-cards/:docId/publish", async (req, res) => {
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
 
+const text = `Your birthday card has been rejected.
+
+Make sure that:
+-> The content has a decent spelling.
+-> The content does not contain profanity or NSFW.
+-> The content does not contain spam.
+-> That does not have content copied from other websites. You must be creative.
+
+You can try again, good luck =D`;
+
 router.put("/birthday-cards/:docId/reject", async (req, res) => {
   if (req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
   const doc = await birthday.findByIdAndDelete(req.params.docId).lean();
-  if (doc) return res.status(201).json({ status: 201 });
+  if (doc) {
+    try {
+      const channel = await utils.createDM(doc.userID);
+      await utils.createMessage(channel.id, { content: text });
+    } catch (_) {
+      await utils.createMessage("402555684849451030", { content: `<@!${doc.userID}>, ${text}` }).catch(() => { });
+    } finally {
+      return res.status(201).json({ status: 201 });
+    }
+  }
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
 
