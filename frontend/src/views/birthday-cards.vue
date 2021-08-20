@@ -23,6 +23,7 @@
           :year="year_obj"
         ></year>
       </div>
+      <h2 v-if="!logged && button" class="subtitle">To add a birthday card, login with Discord.</h2>
     </div>
   </div>
 </template>

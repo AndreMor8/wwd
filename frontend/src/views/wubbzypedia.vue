@@ -66,7 +66,7 @@
 }
 
 .wubbzypedia-color {
-  background-color: rgb(93, 253, 72);
+  background-color: #96ff88;
   border-radius: 0.5em;
   padding: 3px;
   color: #000
