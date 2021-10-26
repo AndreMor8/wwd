@@ -1,4 +1,4 @@
-wubb.ga {
+wubbworld.xyz {
 	encode gzip
 	@back-end path /api/*
 	handle @back-end {

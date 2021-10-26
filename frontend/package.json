@@ -1,5 +1,6 @@
 {
   "name": "wwd-vue",
+  "description": "Wubbworld frontend website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,12 +12,13 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bulma": "0.9.2",
-    "ruffle-mirror": "^2021.6.6",
+    "ruffle-mirror": "^2021.10.26",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.4",
     "vue-loader": "^15.9.7",
     "vue-router": "4.0.8"
   },
+  "homepage": "https://wubbworld.xyz/",
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",

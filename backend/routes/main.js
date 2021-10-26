@@ -1,14 +1,14 @@
 const router = require('express').Router();
-const { getPermissions } = require('../utils/utils');
-const Discord = require("discord.js");
+
+const utils = require('../utils/utils');
+const { MessageEmbed, Util } = require('discord.js');
+
 const DiscordUser = require("../models/DiscordUser");
 const bans = require("../models/appeals");
-const utils = require('../utils/utils');
 const birthday = require("../models/birthday");
 const birthdayYears = require("../models/birthday-years");
-const auth = require("./auth.js");
-const e = require('express');
 
+const auth = require("./auth.js");
 router.use("/auth", auth);
 
 router.use(async function (req, res, next) {
@@ -22,9 +22,9 @@ router.use(async function (req, res, next) {
 function isLogged(req, res, next) {
   if (req.user) next();
   else res.status(401).json({ message: "You must login to the page first", status: 401 });
-};
+}
 
-function isInWDD(req, res, next) {
+/*function isInWDD(req, res, next) {
   const wwd = req.user.guilds.find(e => e.id === "402555684849451028");
   if (wwd) next();
   else res.status(403).json({ message: "You must be on the Wow Wow Discord server before viewing this category.", status: 403 });
@@ -42,9 +42,9 @@ function isWWDVerified(req, res, next) {
   const permissions = utils.getPermissions(guild.permissions);
   if (!permissions.get("ATTACH_FILES")) return res.status(403).json({ message: "You must be a verified user of Wow Wow Discord to view this page.", status: 403 });
   next();
-}
+}*/
 
-router.get('/user', async (req, res) => {
+router.get('/user', (req, res) => {
   res.cookie('XSRF-TOKEN', req.csrfToken());
   res.status(200).json({
     hello: "world",
@@ -53,8 +53,8 @@ router.get('/user', async (req, res) => {
       id: req.user ? req.user.discordId : null,
       inserver: req.user ? (req.user.guilds.find(e => e.id === "402555684849451028") ? true : false) : false,
 
-      verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
-      admin: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ADMINISTRATOR")) : (false)) : false
+      verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (utils.getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
+      admin: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (utils.getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ADMINISTRATOR")) : (false)) : false
     },
     logged: req.user ? true : false,
   });
@@ -81,32 +81,23 @@ router.get("/birthday-cards/:year", async (req, res) => {
     const yearObj = await birthdayYears.findOne({ year }).lean();
     if (!yearObj) return res.status(404).json({ message: "Year not found!", status: 404 });
     const docs = await birthday.find({ published: true, year }).lean();
-    const tosend = [];
-    for (let i in docs) {
-      const tosend_obj = {};
-      tosend_obj.anon = docs[i].anon;
-      tosend_obj._id = docs[i]._id;
-      tosend_obj.card = docs[i].card;
-      tosend_obj.additional = docs[i].additional;
-      tosend_obj.userID = docs[i].userID;
+    for (const i in docs) {
       if (!docs[i].userID || docs[i].anon) {
-        tosend_obj.userID = null;
-        tosend_obj.username = "Anonymous";
-        tosend_obj.avatar = null;
-        tosend.push(tosend_obj);
+        docs[i].userID = null;
+        docs[i].username = "Anonymous";
+        docs[i].avatar = null;
         continue;
-      };
+      }
       const user = await DiscordUser.findOne({ discordId: docs[i].userID }).lean();
       if (user) {
-        tosend_obj.username = user.username;
-        tosend_obj.avatar = utils.getAvatar(user);
+        docs[i].username = user.username;
+        docs[i].avatar = utils.getAvatar(user);
       } else {
-        tosend_obj.username = "Unknown User";
-        tosend_obj.avatar = null;
+        docs[i].username = "Unknown User";
+        docs[i].avatar = null;
       }
-      tosend.push(tosend_obj);
     }
-    res.status(200).json({ enabled: yearObj.enabled, cards: tosend });
+    res.status(200).json({ enabled: yearObj.enabled, cards: docs });
   } catch (err) {
     res.status(500).json({ message: `Something happened: ${err}`, status: 500 });
   }
@@ -136,7 +127,7 @@ router.post("/appeal", isLogged, async (req, res) => {
       additional: req.body.additional || "*No additional*"
     });
     await utils.createMessage("713899475059343440", {
-      embed: new Discord.MessageEmbed()
+      embed: new MessageEmbed()
         .setColor("RANDOM")
         .setTitle("New ban appeal")
         .setDescription(req.body.reason)
@@ -165,14 +156,14 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
       year: year.year
     });
 
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setTitle("New Wubbzy Birthday Card")
       .setAuthor(req.user.username, utils.getAvatar(req.user))
-      .setDescription(Discord.Util.splitMessage(doc.card, { maxLength: 4096 })[0] || "?")
+      .setDescription(Util.splitMessage(doc.card, { maxLength: 4096 })[0] || "?")
       .addField("Requested anonymity?", doc.anon ? "Yes" : "No")
       .setTimestamp();
     if (doc.additional) {
-      embed.addField("Additional", Discord.Util.splitMessage(doc.additional, { maxLength: 1024 })[0]);
+      embed.addField("Additional", Util.splitMessage(doc.additional, { maxLength: 1024 })[0]);
     }
 
     await utils.createMessage("746852433644224562", {
@@ -205,14 +196,14 @@ router.put("/birthday-cards/:docId/publish", async (req, res) => {
   const doc = await birthday.findByIdAndUpdate(req.params.docId, { $set: { published: true } }).lean();
   if (doc) {
     const user = await DiscordUser.findOne({ discordId: doc.userID }).lean();
-    const embed = new Discord.MessageEmbed()
+    const embed = new MessageEmbed()
       .setTitle("New Wubbzy birthday card <:WubbzyParty:608094605296271382>")
-      .setDescription(Discord.Util.splitMessage(doc.card)[0] || "?")
+      .setDescription(Util.splitMessage(doc.card)[0] || "?")
       .setTimestamp()
       .setColor("RANDOM");
     if (doc.anon) embed.setAuthor("Anonymous");
     else embed.setAuthor(user.username, utils.getAvatar(user));
-    if (doc.additional) embed.addField("Additional", Discord.Util.splitMessage(doc.additional, { maxLength: 1024 })[0] || "?");
+    if (doc.additional) embed.addField("Additional", Util.splitMessage(doc.additional, { maxLength: 1024 })[0] || "?");
 
     await utils.createMessage("746852649248227328", { embed });
     return res.status(201).json({ status: 201 });
@@ -241,7 +232,7 @@ router.put("/birthday-cards/:docId/reject", async (req, res) => {
     } catch (_) {
       await utils.createMessage("402555684849451030", { content: `<@!${doc.userID}>, ${text}` }).catch(() => { });
     } finally {
-      return res.status(201).json({ status: 201 });
+      res.status(201).json({ status: 201 });
     }
   }
   else return res.status(404).json({ status: 404, message: "Card not found" });
