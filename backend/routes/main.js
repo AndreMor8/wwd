@@ -127,12 +127,12 @@ router.post("/appeal", isLogged, async (req, res) => {
       additional: req.body.additional || "*No additional*"
     });
     await utils.createMessage("713899475059343440", {
-      embed: new MessageEmbed()
+      embeds: [new MessageEmbed()
         .setColor("RANDOM")
         .setTitle("New ban appeal")
         .setDescription(req.body.reason)
         .addField("Additional", req.body.additional || "*No additional*")
-        .setAuthor(`${req.user.username} (${req.user.discordId})`, utils.getAvatar(req.user))
+        .setAuthor({ name: `${req.user.username} (${req.user.discordId})`, iconURL: utils.getAvatar(req.user) })]
     });
     res.status(201).json({ status: 201 });
   } catch (err) {

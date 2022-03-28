@@ -7,7 +7,7 @@ const CryptoJS = require("crypto-js");
 
 //Bot client
 const { SnowTransfer } = require('snowtransfer');
-const botClient = new SnowTransfer(process.env.DISCORD_TOKEN, { disableEveryone: true });
+const botClient = new SnowTransfer(`Bot ${process.env.DISCORD_TOKEN}`, { disableEveryone: true });
 
 //A simple caching system and that's all
 const cache = new Map();
