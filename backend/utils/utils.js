@@ -7,7 +7,7 @@ const botClient = new SnowTransfer(`Bot ${process.env.DISCORD_TOKEN}`, { disable
 
 const cache = new Map()
 
-setTimeout(() => {
+setInterval(() => {
   cache.clear();
 }, 50000);
 
