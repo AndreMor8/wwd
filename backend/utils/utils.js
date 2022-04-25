@@ -1,63 +1,27 @@
-//perm thing
-const permissions = require("./permissions");
-
 //OAuth2 bearer token
 const OAuth2 = require("../models/OAuth2Credentials");
 const CryptoJS = require("crypto-js");
-
 //Bot client
 const { SnowTransfer } = require('snowtransfer');
 const botClient = new SnowTransfer(`Bot ${process.env.DISCORD_TOKEN}`, { disableEveryone: true });
 
-//A simple caching system and that's all
-const cache = new Map();
-setInterval(() => {
+const cache = new Map()
+
+setTimeout(() => {
   cache.clear();
-}, 240000);
+}, 50000);
 
 module.exports = {
   getUser: async function (userId) {
-    const algo = cache.get(`user-${userId}`);
-    if (algo) return algo;
     const res = await botClient.user.getUser(userId);
-    cache.set(`user-${userId}`, res);
     return res;
   },
-  getPermissions: function (perm) {
-    const permissionMap = new Map();
-    for (const [key, value] of Object.entries(permissions)) {
-      if ((perm & value) == value) permissionMap.set(key, value);
-    }
-    return permissionMap;
-  },
-  getGuilds: function (botGuilds, userGuilds) {
-    if (!Array.isArray(botGuilds)) {
-      console.error(botGuilds);
-      throw new Error('"botGuilds" is not an Array');
-    }
-    if (!Array.isArray(userGuilds)) {
-      console.error(userGuilds);
-      throw new Error('"userGuilds" is not an Array');
-    }
-    const guildMemberPermissions = new Map();
-    userGuilds.forEach(guild => {
-      const perm = this.getPermissions(guild.permissions);
-      guildMemberPermissions.set(guild.id, perm);
-    });
-    const toshow = userGuilds.filter(e => {
-      if (!botGuilds.map(r => r.id).includes(e.id)) return;
-      const p = guildMemberPermissions.get(e.id);
-      if (p && p.get("ADMINISTRATOR")) return true;
-      else return false;
-    });
-    return toshow;
-  },
   getUserGuilds: async function (discordId) {
-    const esto = cache.get(`userGuilds-${discordId}`);
+    const esto = cache.get(`guilds-${discordId}`);
     if (esto) return esto;
     //Edit snowtransfer/dist/SnowTransfer.js to accept Bearer tokens. Works out-to-the-box
     const res = await (new SnowTransfer(`Bearer ${await this.getAccessToken(discordId)}`).user.getGuilds());
-    cache.set(`userGuilds-${discordId}`, res);
+    cache.set(`guilds-${discordId}`, res);
     return res;
   },
   getMember: async function (guildID, userID) {
@@ -72,8 +36,8 @@ module.exports = {
     const toshow = roles.filter(e => member.roles.includes(e.id));
     return toshow;
   },
-  getGuildBans: async function (guildID) {
-    return await botClient.guild.getGuildBans(guildID);
+  getGuildBan: function (guildID, memberID) {
+    return botClient.guild.getGuildBan(guildID, memberID);
   },
   createMessage: async function (channelID, content) {
     return await botClient.channel.createMessage(channelID, content);
@@ -98,5 +62,6 @@ module.exports = {
       else return `https://cdn.discordapp.com/avatars/${User.discordId}/${User.avatar}.png?size=4096`
     } else return `https://cdn.discordapp.com/embed/avatars/${User.username.split("#")[1] % 5}.png`
   },
-  urlRegex: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)/gm
+  // eslint-disable-next-line no-useless-escape
+  urlRegex: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g
 };

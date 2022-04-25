@@ -45,7 +45,7 @@
 </style>
 
 <script>
-import card from "../../partials/card.vue";
+import card from "../../partials/birthday-card.vue";
 export default {
   components: { card },
   data() {

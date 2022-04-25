@@ -26,7 +26,7 @@
         ><button class="button">Server rules</button></router-link
       >
 
-      <router-link v-if="logged && !joined" to="/wwd/appeal"
+      <router-link to="/wwd/appeal"
         ><button class="button">Appeal your ban</button></router-link
       >
 

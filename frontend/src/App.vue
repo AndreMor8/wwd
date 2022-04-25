@@ -86,7 +86,7 @@ footer {
 </style>
 
 <script>
-import navbar from "./partials/navbar.vue";
+import navbar from "./partials/web-navbar.vue";
 export default {
   data() {
     return {

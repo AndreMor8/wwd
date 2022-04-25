@@ -29,6 +29,9 @@
       <router-link to="/games"
         ><button class="button home-button is-info">Games</button></router-link
       >
+      <router-link to="/wubbzy-media"
+        ><button class="button home-button is-info is-light">Wubbzy media</button></router-link
+      >
     </div>
     <div class="buttons fix">
       <h2 class="subtitle wfamily">

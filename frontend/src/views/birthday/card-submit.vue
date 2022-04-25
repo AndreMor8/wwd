@@ -41,7 +41,7 @@
     </form>
   </div>
   <h1 v-else-if="!logged" class="title main_title">
-    You must be logged before using this route!
+    You must login with Discord on this website first.
   </h1>
   <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
   <h1 v-else-if="!enabled" class="title main_title">
@@ -105,8 +105,8 @@ export default {
           location.reload();
         })
         .catch((err) => {
-          console.error(err);
-          this.spanText = "Something happened!";
+          //console.error(err);
+          this.spanText = `Error: ${err.response.data.message}`;
         });
     },
   },

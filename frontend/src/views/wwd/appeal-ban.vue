@@ -33,7 +33,7 @@
     </form>
   </div>
   <h1 v-else-if="!logged" class="title main_title">
-    You must be logged before using this route!
+    You must login with Discord on this website first.
   </h1>
   <h1 v-else-if="appealed" class="title main_title">
     You already made your appeal!

@@ -1,30 +1,23 @@
 const router = require('express').Router();
 
 const utils = require('../utils/utils');
-const { MessageEmbed, Util } = require('discord.js');
+const { MessageEmbed, Util, Permissions } = require('discord.js');
 
 const DiscordUser = require("../models/DiscordUser");
 const bans = require("../models/appeals");
 const birthday = require("../models/birthday");
 const birthdayYears = require("../models/birthday-years");
+const wmposts = require("../models/wm-post.js");
 
 const auth = require("./auth.js");
 router.use("/auth", auth);
 
-router.use(async function (req, res, next) {
-  if (req.user) {
-    const guilds = await utils.getUserGuilds(req.user.discordId) || [];
-    req.user.guilds = guilds;
-  }
-  next();
-});
-
 function isLogged(req, res, next) {
   if (req.user) next();
-  else res.status(401).json({ message: "You must login to the page first", status: 401 });
+  else res.status(401).json({ message: "You must login with Discord on this website first.", status: 401 });
 }
 
-/*function isInWDD(req, res, next) {
+/*function isInWwD(req, res, next) {
   const wwd = req.user.guilds.find(e => e.id === "402555684849451028");
   if (wwd) next();
   else res.status(403).json({ message: "You must be on the Wow Wow Discord server before viewing this category.", status: 403 });
@@ -36,25 +29,53 @@ function isWWDAdmin(req, res, next) {
   if (!permissions.get("ADMINISTRATOR")) return res.status(403).json({ message: "You must be an administrator of Wow Wow Discord to view this page.", status: 403 });
   next();
 }
+*/
 
-function isWWDVerified(req, res, next) {
-  const guild = req.user.guilds.find(e => e.id === "402555684849451028")
-  const permissions = utils.getPermissions(guild.permissions);
-  if (!permissions.get("ATTACH_FILES")) return res.status(403).json({ message: "You must be a verified user of Wow Wow Discord to view this page.", status: 403 });
-  next();
-}*/
+function getWWDMember(user) {
+  if (!user) return undefined;
+  return utils.getMember("402555684849451028", user.discordId);
+}
 
-router.get('/user', (req, res) => {
+async function WWDPerms(member) {
+  if (!member) return new Permissions(0n);
+  const guilds = await utils.getUserGuilds(member.user.id);
+  return new Permissions(guilds.find(e => e.id === "402555684849451028").permissions);
+}
+
+async function canGoWubbzyMedia(user) {
+  const obj = { view: false, publish: false, admin: false };
+  //check if user is on wwd
+  const onGuild = await getWWDMember(user)?.catch(() => { });
+  if (!onGuild) return obj;
+  //check if has wubbzy-media publisher role
+  const hasRole = onGuild.roles.includes("691449767007617104");
+  if (hasRole) {
+    obj.view = true;
+    obj.publish = true;
+  }
+  //check if user has perms to attach files (in wwd means they're verified)
+  const perms = await WWDPerms(onGuild);
+  if (perms.has("ATTACH_FILES")) obj.view = true;
+  //admin can modify anything
+  if (perms.has("ADMINISTRATOR")) {
+    obj.view = true;
+    obj.publish = true;
+    obj.admin = true;
+  }
+  return obj;
+}
+
+router.get('/user', async (req, res) => {
   res.cookie('XSRF-TOKEN', req.csrfToken());
+  const member = await getWWDMember(req?.user)?.catch(() => { });
+  const perms = await WWDPerms(member);
   res.status(200).json({
-    hello: "world",
     user: {
       tag: req.user ? req.user.username : "stranger",
       id: req.user ? req.user.discordId : null,
-      inserver: req.user ? (req.user.guilds.find(e => e.id === "402555684849451028") ? true : false) : false,
-
-      verified: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (utils.getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ATTACH_FILES")) : (false)) : false,
-      admin: req.user ? ((req.user.guilds.find(e => e.id === "402555684849451028")) ? (utils.getPermissions(req.user.guilds.find(e => e.id === "402555684849451028").permissions).has("ADMINISTRATOR")) : (false)) : false
+      inserver: !!member,
+      verified: perms.has("ATTACH_FILES"),
+      admin: perms.has("ADMINISTRATOR")
     },
     logged: req.user ? true : false,
   });
@@ -104,19 +125,17 @@ router.get("/birthday-cards/:year", async (req, res) => {
 });
 
 router.get("/appeal", isLogged, async (req, res) => {
-  const esto = await utils.getGuildBans("402555684849451028");
-  const ver = esto.find(e => e.user.id === req.user.discordId);
+  const esto = await utils.getGuildBan("402555684849451028", req.user.discordId).catch(() => { });
   const appeal = await bans.findOne({ guildId: "402555684849451028", userId: req.user.discordId }).lean();
-  res.status(200).json({ userID: req.user.discordId, banned: !!ver, reason: ver?.reason || null, appealed: !!appeal });
+  res.status(200).json({ userID: req.user.discordId, banned: !!esto, reason: esto?.reason || null, appealed: !!appeal });
 });
 
 router.post("/appeal", isLogged, async (req, res) => {
   if (!req.body.reason) return res.status(400).json({ message: "You have not put the reason", status: 400 });
   if (req.body.reason.length > 2000) return res.status(400).json({ message: "reason must be up to 2000 characters", status: 400 });
   if (req.body.additional?.length > 1000) return res.status(400).json({ message: "additional must be up to 1000 characters", status: 400 });
-  const esto = await utils.getGuildBans("402555684849451028");
-  const ver = esto.find(e => e.user.id === req.user.discordId);
-  if (!ver) return res.status(403).json({ message: "You're not banned", status: 403 });
+  const esto = await utils.getGuildBan("402555684849451028", req.user.discordId).catch(() => { });
+  if (!esto) return res.status(403).json({ message: "You're not banned", status: 403 });
   try {
     const algo = await bans.findOne({ guildId: "402555684849451028", userId: req.user.discordId }).lean();
     if (algo) return res.status(403).json({ message: "You already submitted your appeal", status: 403 });
@@ -184,12 +203,12 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
         }]
       }]
     });
-    res.status(201).json({ status: 201 });
+    res.status(201).json({ status: 201, message: "Card created." });
   } catch (err) {
-    res.status(500).json({ message: `Something happened: ${err}`, status: 500 });
+    res.status(500).json({ message: `${err}`, status: 500 });
   }
 });
-
+/*
 router.put("/birthday-cards/:docId/publish", async (req, res) => {
   if (req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
@@ -210,6 +229,7 @@ router.put("/birthday-cards/:docId/publish", async (req, res) => {
   }
   else return res.status(404).json({ status: 404, message: "Card not found" });
 });
+
 
 const text = `Your birthday card has been rejected.
 
@@ -236,6 +256,70 @@ router.put("/birthday-cards/:docId/reject", async (req, res) => {
     }
   }
   else return res.status(404).json({ status: 404, message: "Card not found" });
+});*/
+
+router.get("/wm/posts", isLogged, async (req, res) => {
+  const wmui = await canGoWubbzyMedia(req.user);
+  if (!req.query["check"]) {
+    const posts = wmui.view ? await wmposts.find().lean() : [];
+    return res.status(200).json({ wmui, posts });
+  } else return res.status(200).json({ wmui });
+});
+
+async function checkPost(req, res, next) {
+  const wmui = await canGoWubbzyMedia(req.user);
+  if (!wmui.publish) return res.status(403).json({ status: 403, message: "You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new content here." });
+  if (typeof req.body.title !== "string") return res.status(400).json({ status: 400, message: "You need a title for your post." });
+  if (req.body.title.length > 200) return res.status(400).json({ status: 400, message: "Only up to 200 characters are allowed in the title description." });
+  if (typeof req.body.description !== "string") return res.status(400).json({ status: 400, message: "You need a description for your post." });
+  if (req.body.description.length > 2500) return res.status(400).json({ status: 400, message: "Only up to 2500 characters are allowed in the post description." })
+  if (!Array.isArray(req.body.mirrors)) return res.status(400).json({ status: 400, message: "You need at least 1 mirror for your post." });
+  if (!req.body.mirrors.length) return res.status(400).json({ status: 400, message: "You need at least 1 mirror for your post." });
+  if (typeof req.body.type !== "number") return res.status(400).json({ status: 400, message: "You need to choose 1 valid type for your post." });
+  if (!([0, 1, 2, 3].includes(req.body.type))) return res.status(400).json({ status: 400, message: "You need to choose 1 valid type for your post." });
+  for (const i in req.body.mirrors) {
+    if (i > 10) return res.status(400).json({ status: 400, message: "You can only put up to 10 mirrors per post." });
+    if (typeof req.body.mirrors[i].name !== "string") return res.status(400).json({ status: 400, message: "You need a name for your post." });
+    if (req.body.mirrors[i].name.length > 50) return res.status(400).json({ status: 400, message: "Only up to 50 characters are allowed in the mirror title." });
+    if (typeof req.body.mirrors[i].url !== "string") return res.status(400).json({ status: 400, message: "You need a valid HTTP* URL for your post." });
+    try {
+      const info = new URL(req.body.mirrors[i].url);
+      if (!(["http:", "https:"].includes(info.protocol))) return res.status(400).json({ status: 400, message: "You need a valid HTTP* URL for your post." });
+    } catch (err) {
+      return res.status(400).json({ status: 400, message: "You need a valid HTTP* URL for your post." });
+    }
+    if (!Object.keys(req.body.mirrors[i]).every(e => ["name", "url"].includes(e))) return res.status(400).json({ status: 400, message: "No other keys are allowed on the mirror object." });
+  }
+  if (req.method === "PUT") {
+    const doc = await wmposts.findById(req.params.id);
+    if ((doc.userID !== req.user.discordId) && (!wmui.admin)) return res.status(403).json({ status: 403, message: "You cannot edit a post that is not yours." });
+  }
+  next();
+}
+
+router.post("/wm/posts", isLogged, checkPost, async (req, res) => {
+  await wmposts.create({
+    userID: req.user.id,
+    title: req.body.title,
+    description: req.body.description,
+    mirrors: req.body.mirrors,
+    type: req.body.type
+  });
+  res.status(201).json({ status: 201, message: "Post created." });
+});
+
+/*router.put("/wm/posts/:id", isLogged, checkPost, async (req, res) => {
+  const doc = await wmposts.findByIdAndUpdate(req.params.id, { title: req.body.title, description: req.body.description, mirrors: req.body.mirrors, type: req.body.type }, { new: true });
+  if (doc) return res.status(200).json({ status: 200, message: "Post edited." });
+  else return res.status(404).json({ status: 404, message: "Document not found." });
+});*/
+
+router.delete("/wm/posts/:id", isLogged, async (req, res) => {
+  const wmui = await canGoWubbzyMedia(req.user);
+  if (!wmui.admin) return res.status(403).json({ status: 403, message: "You must be an admin on Wow Wow Discord to delete posts." });
+  const doc = await wmposts.findByIdAndDelete(req.params.id);
+  if (doc) return res.status(200).json({ status: 200, message: "Post deleted." });
+  else return res.status(404).json({ status: 404, message: "Document not found." });
 });
 
 module.exports = router;

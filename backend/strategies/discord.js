@@ -16,15 +16,14 @@ passport.use(new DS({
   clientID: process.env.CLIENT_ID || "123",
   clientSecret: process.env.CLIENT_SECRET || "123",
   callback: process.env.CLIENT_REDIRECT || "api/auth",
-  scope: ['identify', 'guilds']
+  scope: ['identify', "guilds"]
 }, async (acc, ref, p, done) => {
   try {
     const eat = utils.encrypt(acc).toString();
     const ert = utils.encrypt(ref).toString();
     const user = await DiscordUser.findOneAndUpdate({ discordId: p.id }, {
       username: `${p.username}#${p.discriminator}`,
-      avatar: p.avatar,
-      premium_type: p.premium_type || 0
+      avatar: p.avatar
     });
     const findCredentials = await OAuth2.findOneAndUpdate({ discordId: p.id }, {
       accessToken: eat,
@@ -45,7 +44,6 @@ passport.use(new DS({
         discordId: p.id,
         username: `${p.username}#${p.discriminator}`,
         avatar: p.avatar,
-        premium_type: p.premium_type || 0
       });
       await OAuth2.create({
         discordId: p.id,

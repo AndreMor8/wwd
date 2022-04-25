@@ -4,9 +4,9 @@ const file = require("fs").readdirSync(route).find(e => e.endsWith(".wasm"));
 module.exports = {
     configureWebpack: {
         plugins: [
-            new CopyPlugin(
-                [{from: `${route}/${file}`, to: "js"}]
-            )
+            new CopyPlugin({
+                patterns: [{ from: `${route}/${file}`, to: "js" }]
+            })
         ]
     }
 };
