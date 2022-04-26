@@ -73,6 +73,9 @@ ruffle-player {
 <script>
 import "ruffle-mirror/ruffle.js";
 window.RufflePlayer = window.RufflePlayer || {};
+window.RufflePlayer.config = {
+  publicPath: "/js/ruffle/",
+};
 const containerStyle = `border-style: ridge;
 border-color: aqua;
 border-width: 10px;`;

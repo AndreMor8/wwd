@@ -3,6 +3,12 @@
     You must login with Discord on this website first.
   </h1>
   <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
+  <h1
+    v-else-if="loaded && logged && !canPublish && consultId"
+    class="title main_title"
+  >
+    You cannot edit a post that is not yours.
+  </h1>
   <h1 v-else-if="loaded && logged && !canPublish" class="title main_title">
     You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new
     content here.
@@ -175,6 +181,8 @@ export default {
     return {
       loaded: false,
       logged: this.$root.logged,
+      loggedID: this.$root.user.id,
+      consultId: this.$route.params._id || null,
       canPublish: false,
       post: {
         title: "",
@@ -200,10 +208,25 @@ export default {
       this.$router.push("/wubbzy-media");
     },
     checkStatus() {
-      this.axios.get("/api/wm/posts?check=1").then((e) => {
-        this.canPublish = e.data.wmui.publish;
-        this.loaded = true;
-      });
+      this.axios
+        .get(`/api/wm/posts/${this.consultId || "check"}`)
+        .then((e) => {
+          if (this.consultId) {
+            this.canPublish =
+              e.data.wmui.admin || e.data.post.userID === this.loggedID;
+            //console.log(e.data.post);
+            this.post.title = e.data.post.title;
+            this.post.description = e.data.post.description;
+            this.post.mirrors = e.data.post.mirrors;
+            this.post.type = e.data.post.type;
+          } else this.canPublish = e.data.wmui.publish;
+          this.loaded = true;
+        })
+        .catch((/*e*/) => {
+          //console.error(e.response.data);
+          this.canPublish = false;
+          this.loaded = true;
+        });
     },
     addMirror() {
       if (this.sended) return;
@@ -219,16 +242,28 @@ export default {
       if (this.sended) return;
       this.sended = true;
       this.spanText = "Please wait...";
-      this.axios
-        .post("/api/wm/posts", this.post)
-        .then(() => {
-          this.$router.push("/wubbzy-media");
-        })
-        .catch((err) => {
-          //console.error(err.response.data.message);
-          this.spanText = `Error: ${err.response.data.message}`;
-          this.sended = false;
-        });
+      if (this.consultId)
+        this.axios
+          .put(`/api/wm/posts/${this.consultId}`, this.post)
+          .then(() => {
+            this.$router.push("/wubbzy-media");
+          })
+          .catch((err) => {
+            //console.error(err.response.data.message);
+            this.spanText = `Error: ${err.response.data.message}`;
+            this.sended = false;
+          });
+      else
+        this.axios
+          .post("/api/wm/posts", this.post)
+          .then(() => {
+            this.$router.push("/wubbzy-media");
+          })
+          .catch((err) => {
+            //console.error(err.response.data.message);
+            this.spanText = `Error: ${err.response.data.message}`;
+            this.sended = false;
+          });
     },
   },
 };

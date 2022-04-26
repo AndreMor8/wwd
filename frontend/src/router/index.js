@@ -86,6 +86,13 @@ const routes = [
     }
   },
   {
+    path: '/wubbzy-media/publish/:_id',
+    name: "publish_edit",
+    component: function () {
+      return import('../views/wubbzy-media/media-publish.vue');
+    }
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "404",
     component: function () {

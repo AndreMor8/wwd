@@ -5,7 +5,7 @@ const CryptoJS = require("crypto-js");
 const { SnowTransfer } = require('snowtransfer');
 const botClient = new SnowTransfer(`Bot ${process.env.DISCORD_TOKEN}`, { disableEveryone: true });
 
-const cache = new Map()
+const cache = new Map();
 
 setInterval(() => {
   cache.clear();

@@ -260,15 +260,26 @@ router.put("/birthday-cards/:docId/reject", async (req, res) => {
 
 router.get("/wm/posts", isLogged, async (req, res) => {
   const wmui = await canGoWubbzyMedia(req.user);
-  if (!req.query["check"]) {
-    const posts = wmui.view ? await wmposts.find().lean() : [];
-    return res.status(200).json({ wmui, posts });
-  } else return res.status(200).json({ wmui });
+  const posts = wmui.view ? await wmposts.find().lean() : [];
+  return res.status(200).json({ wmui, posts });
+});
+
+router.get("/wm/posts/:id", isLogged, async (req, res) => {
+  const wmui = await canGoWubbzyMedia(req.user);
+  if (req.params.id === "check") return res.status(200).json({ wmui });
+  if (!wmui.view) return res.status(403).json({ status: 403, message: "You must be verified on Wow Wow Discord to view this content." });
+  const post = await wmposts.findById(req.params._id).lean().catch(() => { });
+  if (post) {
+    for (const i in post.mirrors) {
+      delete post.mirrors[i].id;
+    }
+    return res.status(200).json({ wmui, post });
+  }
+  else return res.status(404).json({ status: 404, message: "Document not found." });
 });
 
 async function checkPost(req, res, next) {
-  const wmui = await canGoWubbzyMedia(req.user);
-  if (!wmui.publish) return res.status(403).json({ status: 403, message: "You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new content here." });
+  req.wmui = await canGoWubbzyMedia(req.user);
   if (typeof req.body.title !== "string") return res.status(400).json({ status: 400, message: "You need a title for your post." });
   if (req.body.title.length > 200) return res.status(400).json({ status: 400, message: "Only up to 200 characters are allowed in the title description." });
   if (typeof req.body.description !== "string") return res.status(400).json({ status: 400, message: "You need a description for your post." });
@@ -290,16 +301,13 @@ async function checkPost(req, res, next) {
     }
     if (!Object.keys(req.body.mirrors[i]).every(e => ["name", "url"].includes(e))) return res.status(400).json({ status: 400, message: "No other keys are allowed on the mirror object." });
   }
-  if (req.method === "PUT") {
-    const doc = await wmposts.findById(req.params.id);
-    if ((doc.userID !== req.user.discordId) && (!wmui.admin)) return res.status(403).json({ status: 403, message: "You cannot edit a post that is not yours." });
-  }
   next();
 }
 
 router.post("/wm/posts", isLogged, checkPost, async (req, res) => {
+  if (!req.wmui.publish) return res.status(403).json({ status: 403, message: "You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new content here." });
   await wmposts.create({
-    userID: req.user.id,
+    userID: req.user.discordId,
     title: req.body.title,
     description: req.body.description,
     mirrors: req.body.mirrors,
@@ -308,18 +316,22 @@ router.post("/wm/posts", isLogged, checkPost, async (req, res) => {
   res.status(201).json({ status: 201, message: "Post created." });
 });
 
-/*router.put("/wm/posts/:id", isLogged, checkPost, async (req, res) => {
-  const doc = await wmposts.findByIdAndUpdate(req.params.id, { title: req.body.title, description: req.body.description, mirrors: req.body.mirrors, type: req.body.type }, { new: true });
-  if (doc) return res.status(200).json({ status: 200, message: "Post edited." });
-  else return res.status(404).json({ status: 404, message: "Document not found." });
-});*/
+router.put("/wm/posts/:id", isLogged, checkPost, async (req, res) => {
+  if (!req.wmui.view) return res.status(403).json({ status: 403, message: "You must be verified on Wow Wow Discord to view this content." });
+  const doc = await wmposts.findById(req.params.id).catch(() => { });
+  if (!doc) return res.status(404).json({ status: 404, message: "Document not found." });
+  if ((doc.userID !== req.user.discordId) && (!req.wmui.admin)) return res.status(403).json({ status: 403, message: "You cannot edit a post that is not yours." });
+  await doc.updateOne({ title: req.body.title, description: req.body.description, mirrors: req.body.mirrors, type: req.body.type }, { new: true });
+  return res.status(200).json({ status: 200, message: "Post edited." });
+});
 
 router.delete("/wm/posts/:id", isLogged, async (req, res) => {
   const wmui = await canGoWubbzyMedia(req.user);
-  if (!wmui.admin) return res.status(403).json({ status: 403, message: "You must be an admin on Wow Wow Discord to delete posts." });
-  const doc = await wmposts.findByIdAndDelete(req.params.id);
-  if (doc) return res.status(200).json({ status: 200, message: "Post deleted." });
-  else return res.status(404).json({ status: 404, message: "Document not found." });
+  if (!wmui.view) return res.status(403).json({ status: 403, message: "You must be verified on Wow Wow Discord to view this content." });
+  const doc = await wmposts.findByIdAndDelete(req.params.id).catch(() => { });
+  if (!doc) return res.status(404).json({ status: 404, message: "Document not found." });
+  if ((doc.userID !== req.user.discordId) && (!wmui.admin)) return res.status(403).json({ status: 403, message: "You must be an admin on Wow Wow Discord to delete posts." });
+  return res.status(200).json({ status: 200, message: "Post deleted." });
 });
 
 module.exports = router;

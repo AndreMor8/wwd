@@ -2,14 +2,25 @@
   <section class="hero" :class="'type-' + type" style="padding: 12px">
     <div class="hero-head" style="text-align: left">
       <strong style="position: absolute">{{ showType }}</strong>
-      <a
-        v-if="admin"
-        @click="deletePost"
+      <div
+        v-if="admin || userID === loggedID"
         style="position: absolute; right: 12px"
-        ><button class="button is-small is-danger" :disabled="pressed">
-          Delete post
-        </button></a
+        class="buttons"
       >
+        <router-link
+          :to="'/wubbzy-media/publish/' + _id"
+          class="button is-small is-link"
+        >
+          Edit post
+        </router-link>
+        <button
+          @click="deletePost"
+          class="button is-small is-danger"
+          :disabled="pressed"
+        >
+          Delete post
+        </button>
+      </div>
     </div>
     <div class="hero-body">
       <h2 class="subtitle">{{ title }}</h2>
@@ -42,6 +53,7 @@ export default {
   data() {
     return {
       pressed: false,
+      loggedID: this.$root.user.id,
     };
   },
   computed: {
@@ -53,7 +65,12 @@ export default {
         "Another individual media",
       ];
       return mytypes[this.type];
-    },
+    } /*,
+    defaultAvatar() {
+      return `https://cdn.discordapp.com/embed/avatars/${
+        this.username.split("#")[1] % 5
+      }.png`;
+    }*/,
   },
   methods: {
     deletePost() {
@@ -75,13 +92,5 @@ export default {
       } else this.pressed = false;
     },
   },
-  /*,
-  computed: {
-    defaultAvatar() {
-      return `https://cdn.discordapp.com/embed/avatars/${
-        this.username.split("#")[1] % 5
-      }.png`;
-    },
-  },*/
 };
 </script>
