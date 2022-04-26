@@ -268,10 +268,10 @@ router.get("/wm/posts/:id", isLogged, async (req, res) => {
   const wmui = await canGoWubbzyMedia(req.user);
   if (req.params.id === "check") return res.status(200).json({ wmui });
   if (!wmui.view) return res.status(403).json({ status: 403, message: "You must be verified on Wow Wow Discord to view this content." });
-  const post = await wmposts.findById(req.params._id).lean().catch(() => { });
+  const post = await wmposts.findById(req.params.id).lean().catch(() => { });
   if (post) {
     for (const i in post.mirrors) {
-      delete post.mirrors[i].id;
+      delete post.mirrors[i]._id;
     }
     return res.status(200).json({ wmui, post });
   }
