@@ -2,7 +2,7 @@
   <div align="center">
     <router-view v-if="loaded" />
     <div v-else>
-      <h1 class="title main_title">Loading...</h1>
+      <h1 class="title main_title">{{ text }}</h1>
     </div>
     <footer v-if="loaded">
       <navbar :logged="logged" :tag="user.tag"></navbar>
@@ -55,11 +55,13 @@ footer {
   text-align: center;
   font-size: 0.88em;
 }
+
 .box {
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 20px;
 }
+
 .field {
   margin: 1em;
 }
@@ -92,6 +94,7 @@ export default {
     return {
       loaded: false,
       logged: false,
+      text: "Loading...",
       user: {
         id: "",
         tag: "stranger",
@@ -107,17 +110,23 @@ export default {
   },
   methods: {
     getUser() {
-      this.axios.get("/api/user").then((e) => {
-        if (e.data.logged) {
-          this.user.id = e.data.user.id;
-          this.user.tag = e.data.user.tag;
-          this.user.inserver = e.data.user.inserver;
-          this.user.verified = e.data.user.verified;
-          this.user.admin = e.data.user.admin;
-          this.logged = true;
-        }
-        this.loaded = true;
-      });
+      this.axios
+        .get("/api/user")
+        .then((e) => {
+          if (e.data.logged) {
+            this.user.id = e.data.user.id;
+            this.user.tag = e.data.user.tag;
+            this.user.inserver = e.data.user.inserver;
+            this.user.verified = e.data.user.verified;
+            this.user.admin = e.data.user.admin;
+            this.logged = true;
+          }
+          this.loaded = true;
+        })
+        .catch((err) => {
+          if (err.response?.data) this.text = err.response.data;
+          else this.text = err.toString();
+        });
     },
   },
 };

@@ -9,7 +9,7 @@ const cache = new Map();
 
 setInterval(() => {
   cache.clear();
-}, 50000);
+}, 10 * 60 * 1000);
 
 module.exports = {
   getUser: async function (userId) {
@@ -19,7 +19,6 @@ module.exports = {
   getUserGuilds: async function (discordId) {
     const esto = cache.get(`guilds-${discordId}`);
     if (esto) return esto;
-    //Edit snowtransfer/dist/SnowTransfer.js to accept Bearer tokens. Works out-to-the-box
     const res = await (new SnowTransfer(`Bearer ${await this.getAccessToken(discordId)}`).user.getGuilds());
     cache.set(`guilds-${discordId}`, res);
     return res;
