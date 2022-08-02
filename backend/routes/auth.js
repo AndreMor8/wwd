@@ -25,8 +25,10 @@ router.get('/', isAuthorized, (req, res, next) => {
 
 router.get('/logout', (req, res) => {
     if (req.user) {
-        req.logout();
-        res.redirect('/');
+        req.logout(err => {
+            if (err) res.status(500).send(err.toString());
+            else res.redirect('/');
+        });
     } else {
         res.redirect('/');
     }

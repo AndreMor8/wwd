@@ -208,7 +208,7 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
     res.status(500).json({ message: `${err}`, status: 500 });
   }
 });
-/*
+
 router.put("/birthday-cards/:docId/publish", async (req, res) => {
   if (req.headers['authorization'] !== process.env.VERYS) return res.status(403).json({ status: 403, message: "Header 'Authorization' has an incorrect key." });
 
@@ -256,7 +256,7 @@ router.put("/birthday-cards/:docId/reject", async (req, res) => {
     }
   }
   else return res.status(404).json({ status: 404, message: "Card not found" });
-});*/
+});
 
 router.get("/wm/posts", isLogged, async (req, res) => {
   const wmui = await canGoWubbzyMedia(req.user);
