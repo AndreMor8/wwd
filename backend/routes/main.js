@@ -17,20 +17,6 @@ function isLogged(req, res, next) {
   else res.status(401).json({ message: "You must login with Discord on this website first.", status: 401 });
 }
 
-/*function isInWwD(req, res, next) {
-  const wwd = req.user.guilds.find(e => e.id === "402555684849451028");
-  if (wwd) next();
-  else res.status(403).json({ message: "You must be on the Wow Wow Discord server before viewing this category.", status: 403 });
-}
-
-function isWWDAdmin(req, res, next) {
-  const guild = req.user.guilds.find(e => e.id === "402555684849451028")
-  const permissions = utils.getPermissions(guild.permissions);
-  if (!permissions.get("ADMINISTRATOR")) return res.status(403).json({ message: "You must be an administrator of Wow Wow Discord to view this page.", status: 403 });
-  next();
-}
-*/
-
 function getWWDMember(user) {
   if (!user) return undefined;
   return utils.getMember("402555684849451028", user.discordId);
@@ -38,8 +24,9 @@ function getWWDMember(user) {
 
 async function WWDPerms(member) {
   if (!member) return new Permissions(0n);
-  const guilds = await utils.getUserGuilds(member.user.id);
-  return new Permissions(guilds.find(e => e.id === "402555684849451028").permissions);
+  const data = await utils.getWWDPerms(member.user.id);
+  if (data.status !== 200) return new Permissions(0n);
+  else return new Permissions(BigInt(data.member.permissions));
 }
 
 async function canGoWubbzyMedia(user) {
@@ -186,7 +173,7 @@ router.post("/birthday-cards/submit", isLogged, async (req, res) => {
     }
 
     await utils.createMessage("746852433644224562", {
-      embed,
+      embeds: [embed],
       components: [{
         type: 1,
         components: [{
@@ -224,7 +211,7 @@ router.put("/birthday-cards/:docId/publish", async (req, res) => {
     else embed.setAuthor(user.username, utils.getAvatar(user));
     if (doc.additional) embed.addField("Additional", Util.splitMessage(doc.additional, { maxLength: 1024 })[0] || "?");
 
-    await utils.createMessage("746852649248227328", { embed });
+    await utils.createMessage("746852649248227328", { embeds: [embed] });
     return res.status(201).json({ status: 201 });
   }
   else return res.status(404).json({ status: 404, message: "Card not found" });

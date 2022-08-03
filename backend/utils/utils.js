@@ -5,26 +5,17 @@ const CryptoJS = require("crypto-js");
 const { SnowTransfer } = require('snowtransfer');
 const botClient = new SnowTransfer(`Bot ${process.env.DISCORD_TOKEN}`, { disableEveryone: true });
 
-const cache = new Map();
-
-setInterval(() => {
-  cache.clear();
-}, 10 * 60 * 1000);
-
 module.exports = {
   getUser: async function (userId) {
     const res = await botClient.user.getUser(userId);
     return res;
   },
-  getUserGuilds: async function (discordId) {
-    const esto = cache.get(`guilds-${discordId}`);
-    if (esto) return esto;
-    const res = await (new SnowTransfer(`Bearer ${await this.getAccessToken(discordId)}`).user.getGuilds());
-    cache.set(`guilds-${discordId}`, res);
-    return res;
-  },
   getMember: async function (guildID, userID) {
     return await botClient.guild.getGuildMember(guildID, userID);
+  },
+  getWWDPerms: async function (userID) {
+    const res = await fetch(`${process.env.NEW_API}?id=${userID}`);
+    return await res.json();
   },
   getGuildRoles: async function (guildID) {
     return await botClient.guild.getGuildRoles(guildID);

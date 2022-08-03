@@ -16,7 +16,7 @@ passport.use(new DS({
   clientID: process.env.CLIENT_ID || "123",
   clientSecret: process.env.CLIENT_SECRET || "123",
   callback: process.env.CLIENT_REDIRECT || "api/auth",
-  scope: ['identify', "guilds"]
+  scope: ['identify']
 }, async (acc, ref, p, done) => {
   try {
     const eat = utils.encrypt(acc).toString();

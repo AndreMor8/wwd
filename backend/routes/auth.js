@@ -17,7 +17,7 @@ router.get('/', isAuthorized, (req, res, next) => {
     passport.authenticate('discord', {
         state: key,
         failureMessage: true,
-        scope: ["identify", "guilds"],
+        scope: ["identify"],
         callbackURL: `${process.env.PROJECT_DOMAIN}/${process.env.CLIENT_REDIRECT}`,
         successRedirect: `${process.env.PROJECT_DOMAIN}`
     })(req, res, next);
