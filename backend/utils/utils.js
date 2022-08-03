@@ -14,7 +14,7 @@ module.exports = {
     return await botClient.guild.getGuildMember(guildID, userID);
   },
   getWWDPerms: async function (userID) {
-    const res = await fetch(`${process.env.NEW_API}?id=${userID}`);
+    const res = await fetch(`${process.env.NEW_API}?id=${userID}`, { headers: { Authorization: process.env.NEW_API_PASS } });
     return await res.json();
   },
   getGuildRoles: async function (guildID) {
