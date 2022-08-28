@@ -85,6 +85,10 @@ footer {
   color: #f0e285;
   -webkit-text-stroke: 1px black;
 }
+
+.content {
+  white-space: pre-wrap;
+}
 </style>
 
 <script>
