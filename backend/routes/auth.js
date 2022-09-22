@@ -19,7 +19,7 @@ router.get('/', isAuthorized, (req, res, next) => {
         failureMessage: true,
         scope: ["identify"],
         callbackURL: `${process.env.PROJECT_DOMAIN}/${process.env.CLIENT_REDIRECT}`,
-        successRedirect: `${process.env.PROJECT_DOMAIN}`
+        successRedirect: `https://wubbworld.xyz/`
     })(req, res, next);
 });
 

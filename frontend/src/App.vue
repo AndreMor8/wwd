@@ -23,19 +23,19 @@ body {
 }
 
 .main {
-  background-image: url("./assets/main.jpg");
+  background-image: url("./assets/main.webp");
 }
 
 .wwd {
-  background-image: url("./assets/wwd.jpg");
+  background-image: url("./assets/wwd.webp");
 }
 
 .birthdaycards {
-  background-image: url("./assets/birthdaycards.png");
+  background-image: url("./assets/birthdaycards.webp");
 }
 
 .birthdaysubmit {
-  background-image: url("./assets/birthdaysubmit.png");
+  background-image: url("./assets/birthdaysubmit.webp");
 }
 
 .main_title {
@@ -110,12 +110,13 @@ export default {
   },
   components: { navbar },
   created() {
+    this.axios.defaults.withCredentials = true;
     this.getUser();
   },
   methods: {
     getUser() {
       this.axios
-        .get("/api/user")
+        .get(`${window.apiDomain}/user`)
         .then((e) => {
           if (e.data.logged) {
             this.user.id = e.data.user.id;

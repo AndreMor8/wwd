@@ -2,7 +2,7 @@
   <div>
     <br />
     <figure class="image is-128x128">
-      <img id="wwd_home_icon" src="/img/icon.gif" alt="wwd_home_icon" />
+      <img id="wwd_home_icon" src="../assets/icon.webp" alt="wwd_home_icon" />
     </figure>
 
     <h1 id="wwd_home_title" class="title">Wow Wow Discord</h1>

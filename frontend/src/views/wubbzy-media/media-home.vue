@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     goWubbzyMedia() {
-      this.axios.get("/api/wm/posts").then((e) => {
+      this.axios.get(`${window.apiDomain}/wm/posts`).then((e) => {
         this.canView = e.data.wmui.view;
         this.canPublish = e.data.wmui.publish;
         this.admin = e.data.wmui.admin;

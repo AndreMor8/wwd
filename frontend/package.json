@@ -1,8 +1,8 @@
 {
   "name": "wwd-vue",
-  "description": "Wubbworld frontend website",
   "version": "0.1.0",
   "private": true,
+  "description": "Wubbworld frontend website",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -12,20 +12,22 @@
   "dependencies": {
     "axios": "^0.27.2",
     "bulma": "^0.9.4",
-    "ruffle-mirror": "^2022.8.28",
+    "ruffle-mirror": "^2022.9.19",
     "vue": "^3.2.37",
     "vue-axios": "^3.2.4",
     "vue-loader": "^17.0.0",
     "vue-router": "^4.1.5"
   },
-  "homepage": "https://wubbworld.xyz/",
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "@fullhuman/vue-cli-plugin-purgecss": "~5.0.0",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
     "@vue/compiler-sfc": "^3.2.37",
     "copy-webpack-plugin": "^11.0.0",
-    "eslint": "^8.23.0",
-    "eslint-plugin-vue": "^9.4.0"
-  }
+    "eslint": "^8.23.1",
+    "eslint-plugin-vue": "^9.5.1"
+  },
+  "homepage": "https://wubbworld.xyz/"
 }

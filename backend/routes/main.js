@@ -52,6 +52,10 @@ async function canGoWubbzyMedia(user) {
   return obj;
 }
 
+router.get('/', (req, res) => {
+  res.status(200).json({ status: 200, message: "Hello world!" });
+});
+
 router.get('/user', async (req, res) => {
   res.cookie('XSRF-TOKEN', req.csrfToken());
   const member = await getWWDMember(req?.user)?.catch(() => { });

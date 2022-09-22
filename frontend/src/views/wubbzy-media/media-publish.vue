@@ -209,7 +209,7 @@ export default {
     },
     checkStatus() {
       this.axios
-        .get(`/api/wm/posts/${this.consultId || "check"}`)
+        .get(`${window.apiDomain}/wm/posts/${this.consultId || "check"}`)
         .then((e) => {
           if (this.consultId) {
             this.canPublish =
@@ -244,7 +244,7 @@ export default {
       this.spanText = "Please wait...";
       if (this.consultId)
         this.axios
-          .put(`/api/wm/posts/${this.consultId}`, this.post)
+          .put(`${window.apiDomain}/wm/posts/${this.consultId}`, this.post)
           .then(() => {
             this.$router.push("/wubbzy-media");
           })
@@ -255,7 +255,7 @@ export default {
           });
       else
         this.axios
-          .post("/api/wm/posts", this.post)
+          .post(`${window.apiDomain}/wm/posts`, this.post)
           .then(() => {
             this.$router.push("/wubbzy-media");
           })

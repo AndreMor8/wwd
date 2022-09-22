@@ -65,12 +65,7 @@ export default {
         "Another individual media",
       ];
       return mytypes[this.type];
-    } /*,
-    defaultAvatar() {
-      return `https://cdn.discordapp.com/embed/avatars/${
-        this.username.split("#")[1] % 5
-      }.png`;
-    }*/,
+    },
   },
   methods: {
     deletePost() {
@@ -79,7 +74,7 @@ export default {
       const a = confirm("Do you want to delete this post permanently?");
       if (a) {
         this.axios
-          .delete(`/api/wm/posts/${this._id}`)
+          .delete(`${window.apiDomain}/wm/posts/${this._id}`)
           .then(() => {
             alert("Post deleted.");
             this.$parent.goWubbzyMedia();

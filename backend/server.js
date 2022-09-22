@@ -8,6 +8,7 @@ const passport = require("passport");
 const csrf = require('csurf');
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const cors = require("cors");
 
 //Full express app
 const app = express();
@@ -23,7 +24,8 @@ const app = express();
     session({
       secret: process.env.SECRET || "?",
       cookie: {
-        maxAge: 60000 * 60 * 24
+        maxAge: 60000 * 60 * 24,
+        domain: ".wubbworld.xyz"
       },
       saveUninitialized: false,
       resave: false,
@@ -34,10 +36,14 @@ const app = express();
 
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(cors({
+    origin: "https://wubbworld.xyz",
+    credentials: true
+  }))
   //Ignoring PUT requests as I'm using them with Authorization keys
   app.use(csrf({ ignoreMethods: ['GET', 'PUT', 'HEAD', 'OPTIONS'] }));
-  //Use api route, simple as `reverse_proxy localhost:port` on Caddy
-  app.use("/api", require("./routes/main"));
+
+  app.use("/", require("./routes/main"));
   //No unauthorized logged-on requests
   app.use(function (err, req, res, next) {
     if (err.code !== 'EBADCSRFTOKEN') return next(err)
@@ -55,9 +61,7 @@ const app = express();
     //A 405 for non-GET requests
     if (req.method !== "GET") res.status(405).json({ status: 405, message: "Method not allowed!" });
     // If self-serving static front-end pages, return index.html, otherwise just redirect
-    else if (process.env.SERVE_STATIC) {
-      res.sendFile(require("path").join(__dirname, "..", "frontend", "dist", "index.html"));
-    } else res.status(404).redirect('/');
+    res.status(404).json({ status: 404, message: "Not found" });
   });
   // listen for requests :)
   const listener = app.listen(process.env.PORT, () => {

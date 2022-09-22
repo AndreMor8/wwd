@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     isSendedBefore() {
-      this.axios.get("/api/birthday-cards/checkcard").then((e) => {
+      this.axios.get(`${window.apiDomain}/birthday-cards/checkcard`).then((e) => {
         this.enabled = e.data.enabled;
         this.sendedBefore = e.data.sended;
         this.loaded = true;
@@ -96,7 +96,7 @@ export default {
     sendCard() {
       this.sended = true;
       this.axios
-        .post("/api/birthday-cards/submit", this.card)
+        .post(`${window.apiDomain}/birthday-cards/submit`, this.card)
         .then(() => {
           this.spanText = "Your card was sent successfully.";
           alert(

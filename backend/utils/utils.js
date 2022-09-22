@@ -48,8 +48,8 @@ module.exports = {
   },
   getAvatar: function (User) {
     if (User.avatar) {
-      if (User.avatar.startsWith("a_")) return `https://cdn.discordapp.com/avatars/${User.discordId}/${User.avatar}.gif?size=4096`
-      else return `https://cdn.discordapp.com/avatars/${User.discordId}/${User.avatar}.png?size=4096`
+      if (User.avatar.startsWith("a_")) return `https://cdn.discordapp.com/avatars/${User.discordId}/${User.avatar}.gif?size=128`
+      else return `https://cdn.discordapp.com/avatars/${User.discordId}/${User.avatar}.webp?size=128`
     } else return `https://cdn.discordapp.com/embed/avatars/${User.username.split("#")[1] % 5}.png`
   },
   // eslint-disable-next-line no-useless-escape

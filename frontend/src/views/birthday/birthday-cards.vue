@@ -66,7 +66,7 @@ export default {
   methods: {
     getCards() {
       this.axios
-        .get(`/api/birthday-cards/${this.$route.params.year}`)
+        .get(`${window.apiDomain}/birthday-cards/${this.$route.params.year}`)
         .then((e) => {
           this.cards = e.data.cards;
           this.button = e.data.enabled;

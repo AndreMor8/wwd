@@ -1,10 +1,10 @@
 <template>
   <div>
-    <img id="wubbzypedia_logo" src="https://vignette.wikia.nocookie.net/wubbzy/images/e/e6/Site-logo.png/revision/latest?cb=20210601233744&format=original" alt="wubbzypedia logo">
+    <img id="wubbzypedia_logo" src="https://vignette.wikia.nocookie.net/wubbzy/images/e/e6/Site-logo.png"
+      alt="wubbzypedia logo">
     <h2 class="subtitle" style="font-size: xx-large">
       <span class="wubbzypedia-color">
-        The wubbtastic online Wubbzy encyclopedia that anyone can edit.</span
-      >
+        The wubbtastic online Wubbzy encyclopedia that anyone can edit.</span>
     </h2>
     <p class="wubbzypedia-text">
       <span class="wubbzypedia-color">
@@ -29,32 +29,25 @@
     <br />
     <p class="wubbzypedia-text">
       <span class="wubbzypedia-color">
-        Hosted on the FANDOM wiki hosting service.</span
-      >
+        Hosted on the FANDOM wiki hosting service.</span>
     </p>
     <div class="buttons fix">
-      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia"
-        ><button class="button wubbzypedia-button is-info">Main Page</button></a
-      >
-      <a href="https://wubbzy.fandom.com/es/wiki/Wubbzypedia"
-        ><button class="button wubbzypedia-button is-info">
+      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia"><button class="button wubbzypedia-button is-info">Main
+          Page</button></a>
+      <a href="https://wubbzy.fandom.com/es/wiki/Wubbzypedia"><button class="button wubbzypedia-button is-info">
           Wubbzypedia in Spanish
-        </button></a
-      >
-      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia:About"
-        ><button class="button wubbzypedia-button is-info">
+        </button></a>
+      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia:About"><button class="button wubbzypedia-button is-info">
           About and more history
-        </button></a
-      >
+        </button></a>
     </div>
   </div>
 </template>
 
 <style>
-
 #wubbzypedia_logo {
-    padding-top: 10px;
-    width: 20em;
+  padding-top: 10px;
+  width: 20em;
 }
 
 .wubbzypedia-button {

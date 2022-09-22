@@ -5,25 +5,14 @@
     <form id="wwd_ban_appeal" @submit.prevent="sendAppeal">
       <div class="field">
         <div class="control">
-          <textarea
-            class="textarea is-medium"
-            name="reason"
-            v-model="banAppeal.reason"
-            type="text"
-            placeholder="Why should we unban you? (max. 2000 characters)"
-            required
-          ></textarea>
+          <textarea class="textarea is-medium" name="reason" v-model="banAppeal.reason" type="text"
+            placeholder="Why should we unban you? (max. 2000 characters)" required></textarea>
         </div>
       </div>
       <div class="field">
         <div class="control">
-          <textarea
-            class="textarea is-medium"
-            name="additional"
-            v-model="banAppeal.additional"
-            type="text"
-            placeholder="Do you want to indicate something outside of the appeal? Write it here. (max. 1000 characters)"
-          ></textarea>
+          <textarea class="textarea is-medium" name="additional" v-model="banAppeal.additional" type="text"
+            placeholder="Do you want to indicate something outside of the appeal? Write it here. (max. 1000 characters)"></textarea>
         </div>
       </div>
       <br />
@@ -77,7 +66,7 @@ export default {
   },
   methods: {
     getBanInfo() {
-      this.axios.get(`/api/appeal`).then((e) => {
+      this.axios.get(`${window.apiDomain}/appeal`).then((e) => {
         this.banned = e.data.banned;
         this.appealed = e.data.appealed;
         if (e.data.reason) this.banReason = e.data.reason;
@@ -87,7 +76,7 @@ export default {
     sendAppeal() {
       this.sended = true;
       this.axios
-        .post("/api/appeal", this.banAppeal)
+        .post(`${window.apiDomain}/appeal`, this.banAppeal)
         .then(() => {
           this.spanText =
             "Your appeal has been sended! Now wait for an administrator to review it. Come back soon.";
