@@ -57,7 +57,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/user', async (req, res) => {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
+  res.cookie('XSRF-TOKEN', req.csrfToken(), { domain: ".wubbworld.xyz" });
   const member = await getWWDMember(req?.user)?.catch(() => { });
   const perms = await WWDPerms(member);
   res.status(200).json({
