@@ -25,7 +25,7 @@ const app = express();
       secret: process.env.SECRET || "?",
       cookie: {
         maxAge: 60000 * 60 * 24,
-        domain: ".wubbworld.xyz"
+        domain: process.env.COOKIE_DOMAIN
       },
       saveUninitialized: false,
       resave: false,
@@ -37,7 +37,7 @@ const app = express();
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(cors({
-    origin: "https://wubbworld.xyz",
+    origin: process.env.CORS_DOMAINS.split(","),
     credentials: true
   }))
   //Ignoring PUT requests as I'm using them with Authorization keys

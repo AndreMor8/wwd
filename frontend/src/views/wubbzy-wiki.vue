@@ -1,70 +1,40 @@
 <template>
-  <div>
-    <img id="wubbzypedia_logo" src="https://vignette.wikia.nocookie.net/wubbzy/images/e/e6/Site-logo.png"
-      alt="wubbzypedia logo">
+  <img id="wubbzypedia_logo" src="https://vignette.wikia.nocookie.net/wubbzy/images/e/e6/Site-logo.png"
+    alt="Wubbzypedia logo"><br />
+  <div class="box">
     <h2 class="subtitle" style="font-size: xx-large">
-      <span class="wubbzypedia-color">
-        The wubbtastic online Wubbzy encyclopedia that anyone can edit.</span>
+      The wubbtastic online Wubbzy encyclopedia that anyone can edit.
     </h2>
-    <p class="wubbzypedia-text">
-      <span class="wubbzypedia-color">
-        This wiki contains everything a Wubbzy fan should and will want to know,
-        written by various community members and various casual editors.
-      </span>
+    <p class="content">
+      This wiki contains everything a Wubbzy fan should and will want to know,
+      written by various community members and various casual editors.
     </p>
-    <br />
-    <p class="wubbzypedia-text">
-      <span class="wubbzypedia-color">
-        It is the place where our community began, and it grew little by little,
-        now it has more than 1000 pages about the show!
-      </span>
+
+    <p class="content">
+      It is the place where our community began, and it grew little by little,
+      now it has more than 1000 pages about the show!
     </p>
-    <br />
-    <p class="wubbzypedia-text">
-      <span class="wubbzypedia-color">
-        We invite you to read the wiki and remember your childhood! If you think
-        there is a mistake or want to add something, you are welcome to do so!
-      </span>
+
+    <p class="content">
+      We invite you to read the wiki and remember your childhood! If you think
+      there is a mistake or want to add something, you are welcome to do so!
     </p>
-    <br />
-    <p class="wubbzypedia-text">
-      <span class="wubbzypedia-color">
-        Hosted on the FANDOM wiki hosting service.</span>
+
+    <p class="content">
+      Hosted on the FANDOM wiki hosting service.
     </p>
-    <div class="buttons fix">
-      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia"><button class="button wubbzypedia-button is-info">Main
-          Page</button></a>
-      <a href="https://wubbzy.fandom.com/es/wiki/Wubbzypedia"><button class="button wubbzypedia-button is-info">
-          Wubbzypedia in Spanish
-        </button></a>
-      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia:About"><button class="button wubbzypedia-button is-info">
-          About and more history
-        </button></a>
+    <div class="buttons">
+      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia" class="button is-info is-responsive">Main
+        Page</a>
+      <a href="https://wubbzy.fandom.com/es/wiki/Wubbzypedia" class="button is-info is-responsive">
+        Wubbzypedia in Spanish
+      </a>
+      <a href="https://wubbzy.fandom.com/wiki/Wubbzypedia:About" class="button is-info is-responsive">
+        About and more history
+      </a>
     </div>
   </div>
 </template>
-
-<style>
-#wubbzypedia_logo {
-  padding-top: 10px;
-  width: 20em;
-}
-
-.wubbzypedia-button {
-  font-size: 20px;
-}
-
-.wubbzypedia-text {
-  font-size: 20px;
-}
-
-.wubbzypedia-color {
-  background-color: #96ff88;
-  border-radius: 0.5em;
-  padding: 3px;
-  color: #000
-}
-</style>
 
 <script>
 export default {

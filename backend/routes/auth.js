@@ -18,8 +18,8 @@ router.get('/', isAuthorized, (req, res, next) => {
         state: key,
         failureMessage: true,
         scope: ["identify"],
-        callbackURL: `${process.env.PROJECT_DOMAIN}/${process.env.CLIENT_REDIRECT}`,
-        successRedirect: `https://wubbworld.xyz/`
+        callbackURL: `${process.env.API_DOMAIN}${process.env.CLIENT_REDIRECT}`,
+        successRedirect: `${process.env.FRONTEND_DOMAIN}`
     })(req, res, next);
 });
 
@@ -27,16 +27,16 @@ router.get('/logout', (req, res) => {
     if (req.user) {
         req.logout(err => {
             if (err) res.status(500).send(err.toString());
-            else res.redirect('https://wubbworld.xyz/');
+            else res.redirect(process.env.FRONTEND_DOMAIN);
         });
     } else {
-        res.redirect('https://wubbworld.xyz/');
+        res.redirect(process.env.FRONTEND_DOMAIN);
     }
 });
 
 function isAuthorized(req, res, next) {
     if (req.user) {
-        res.redirect('/')
+        res.redirect(process.env.FRONTEND_DOMAIN)
     }
     else {
         next();

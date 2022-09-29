@@ -2,7 +2,7 @@
   <nav class="navbar is-warning is-fixed-bottom" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <div class="navbar-item">
-        <router-link to="/"><img src="../assets/icon.webp" alt="wwd_icon" width="28" height="28"/></router-link>
+        <router-link to="/"><img src="../assets/icon.webp" alt="wwd_icon" width="28" height="28" /></router-link>
       </div>
       <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>
@@ -29,13 +29,13 @@
         <div class="navbar-item">
           <div class="buttons">
             <form v-if="logged" :action="apiDomain + '/auth/logout'">
-              <button class="button is-primary is-rounded" style="font-size: 0.95em" type="submit">
+              <button class="button is-info is-rounded is-light is-focused" style="font-size: 0.95em" type="submit">
                 Logout
               </button>
             </form>
 
             <form v-else :action="apiDomain + '/auth/'">
-              <button class="button is-primary is-rounded" style="font-size: 0.95em" type="submit">
+              <button class="button is-info is-rounded is-light is-focused" style="font-size: 0.95em" type="submit">
                 Login
               </button>
             </form>

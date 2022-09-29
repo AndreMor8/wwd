@@ -1,66 +1,65 @@
 <template>
-  <div>
-    <br />
-    <figure class="image is-128x128">
-      <img id="wwd_home_icon" src="../assets/icon.webp" alt="wwd_home_icon" />
-    </figure>
+  <div class="box">
+    <div class="container">
+      <figure class="image">
+        <img id="wwd_home_icon" src="../assets/icon.webp" alt="wwd_home_icon" />
+      </figure>
+      <h1 class="title">Wow Wow Discord</h1>
+    </div><br />
 
-    <h1 id="wwd_home_title" class="title">Wow Wow Discord</h1>
     <h2 id="wwd_home_subtitle" class="subtitle">
       The best custom Wow! Wow! Wubbzy! server
     </h2>
-    <span id="wwd_home_description">
-      Wow Wow Discord is a Discord server dedicated to existing and new Wubbzy
-      fans. Our goal is to bring fans together, relive childhood and provide a
-      space for Wubbzy to continue in our lives.
-    </span>
-    <div class="buttons fix">
+  </div>
+  <div class="box">
+    <p class="content">
+      Wow Wow Discord is a Discord server dedicated to existing and new Wubbzy fans.
+    </p>
+    <p class="content">Our goal is to bring fans together, relive childhood and provide a
+      space for Wubbzy to continue in our lives.</p>
+    <div class="buttons">
       <a v-if="joined" href="https://discord.com/channels/402555684849451028"
-        ><button class="button">Go to the server</button></a
-      >
-      <a v-if="!joined" href="https://discord.gg/5qx9ZcV"
-        ><button class="button">Join the server :)</button></a
-      >
+        class="button is-responsive is-info is-light is-focused">Go to the
+        server</a>
+      <a v-if="!joined" href="https://discord.gg/5qx9ZcV" class="button is-responsive is-info is-light is-focused">Join
+        the server :)</a>
 
-      <router-link to="/wwd/rules"
-        ><button class="button">Server rules</button></router-link
-      >
+      <router-link to="/wwd/rules" class="button is-responsive is-info is-light is-focused">Server rules</router-link>
 
-      <router-link to="/wwd/appeal"
-        ><button class="button">Appeal your ban</button></router-link
-      >
+      <router-link to="/wwd/appeal" class="button is-responsive is-info is-light is-focused">Appeal your ban
+      </router-link>
 
-      <router-link to="/wwd/wm-qualifiers"
-        ><button class="button">
-          What qualifies for Wubbzy Media?
-        </button></router-link
-      >
-      <!--<a v-if="admin" href="/appeals"><button class="button">Ban appeals</button></a>-->
+      <router-link to="/wwd/wm-qualifiers" class="button is-responsive is-info is-light is-focused">
+        What qualifies for Wubbzy Media?
+      </router-link>
     </div>
   </div>
 </template>
 
-<style>
-#wwd_home_icon {
-  margin-top: 4px;
+<style scoped>
+.box>.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box>.container>figure {
+  width: 128px;
+}
+
+.box>.container>figure>img {
   border-color: #18191c;
   border-style: solid;
   background-color: #18191c;
+  border-radius: 100%;
 }
-#wwd_home_title {
-  margin-top: 15px;
+
+.box>.container>h1 {
+  margin-left: 2rem;
 }
 
 #wwd_home_subtitle {
-  font-size: 40px;
-  margin-top: -15px;
-  margin-bottom: 10px;
-}
-#wwd_home_description {
-  padding: 3px;
-  margin-top: 10px;
-  background-color: rgba(243, 247, 129, 0.87);
-  font-size: 20px;
+  font-size: 2rem;
 }
 </style>
 

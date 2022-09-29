@@ -1,46 +1,36 @@
 <template>
-  <h1 v-if="invalid" class="subtitle main_title">Invalid year!</h1>
-  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
+  <h1 v-if="invalid" class="subtitle">Invalid year!</h1>
+  <h1 v-else-if="!loaded" class="title">Loading...</h1>
   <div v-else>
-    <router-link
-      v-if="logged && button"
-      to="/birthday-cards/submit"
-      style="right: 0; padding-right: 1em; padding-top: 1em; position: absolute"
-    >
-      <button class="button is-info is-light">Add new birthday card</button>
-    </router-link>
-    <h1
-      class="birthday_title title main_title"
-      style="text-align: center; margin-bottom: 15px"
-    >
-      Birthday cards for Wubbzy! ({{ year }})
-    </h1>
+    <div class="box">
+      <h1 id="birthday_title" class="title">
+        Birthday cards for Wubbzy! ({{ year }})
+      </h1>
+      <router-link v-if="logged && button" to="/birthday-cards/submit" class="button is-info is-light is-focused">
+        Add new birthday card
+      </router-link>
+    </div>
     <div v-if="!!cards.length">
       <div class="box" v-for="card in cards" :key="card._id">
-        <card
-          :card="card.card"
-          :additional="card.additional"
-          :userID="card.userID"
-          :adminmode="false"
-          :anon="card.anon"
-          :username="card.username"
-          :avatar="card.avatar"
-        ></card>
+        <card :card="card.card" :additional="card.additional" :userID="card.userID" :adminmode="false" :anon="card.anon"
+          :username="card.username" :avatar="card.avatar"></card>
       </div>
     </div>
     <div v-else>
-      <b
-        ><h2 class="subtitle" style="font-size: 2em">
+      <b>
+        <h2 class="subtitle" style="font-size: 2em">
           Nothing yet :( Let's add one!
-        </h2></b
-      >
+        </h2>
+      </b>
     </div>
   </div>
 </template>
 
-<style>
-.birthday {
-  text-align: left;
+<style scoped>
+#birthday_title {
+  color: #FEE382;
+  -webkit-text-stroke: 1px black;
+  font-size: 2.9rem;
 }
 </style>
 

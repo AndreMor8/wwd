@@ -1,12 +1,8 @@
 <template>
-  <router-link :to="'/birthday-cards/' + year.year"
-    ><button
-      class="button year"
-      :class="{ year_enabled: year.enabled, year_disabled: !year.enabled }"
-    >
-      {{ year.year }}
-    </button></router-link
-  >
+  <router-link :to="'/birthday-cards/' + year.year" class="button year"
+    :class="{ year_enabled: year.enabled, year_disabled: !year.enabled }">
+    {{ year.year }}
+  </router-link>
 </template>
 
 <style>
@@ -15,6 +11,7 @@
   font-size: xx-large;
   border-width: 0.16em;
 }
+
 .year:hover {
   background-color: lightgray;
 }

@@ -1,20 +1,16 @@
 <template>
-  <h1 v-if="!logged" class="title main_title">
+  <h1 v-if="!logged" class="title">
     You must login with Discord on this website first.
   </h1>
-  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
-  <h1
-    v-else-if="loaded && logged && !canPublish && consultId"
-    class="title main_title"
-  >
+  <h1 v-else-if="!loaded" class="title">Loading...</h1>
+  <h1 v-else-if="loaded && logged && !canPublish && consultId" class="title">
     You cannot edit a post that is not yours.
   </h1>
-  <h1 v-else-if="loaded && logged && !canPublish" class="title main_title">
-    You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new
-    content here.
+  <h1 v-else-if="loaded && logged && !canPublish" class="title">
+    You need the 'Wubbzy-Media Publisher' role on Wow Wow Discord to post new content here.
   </h1>
   <div v-else-if="loaded && logged && canPublish">
-    <h1 class="birthday_title title main_title">
+    <h1 class="title">
       Create a new Wubbzy multimedia post
     </h1>
     <h2 class="subtitle">
@@ -23,85 +19,39 @@
     <form id="wwd_media_publish_form" @submit.prevent="sendPost">
       <div class="field">
         <div class="control">
-          <input
-            class="input is-info"
-            type="text"
-            placeholder="What is this? (title)"
-            v-model="post.title"
-            name="title"
-            required
-            :disabled="sended"
-          />
+          <input class="input is-info" type="text" placeholder="What is this? (title)" v-model="post.title" name="title"
+            required :disabled="sended" />
         </div>
       </div>
       <div class="field">
         <div class="control">
-          <textarea
-            class="textarea is-info"
-            name="description"
-            v-model="post.description"
-            type="text"
-            placeholder="Tell us more about this (description)"
-            :disabled="sended"
-          ></textarea>
+          <textarea class="textarea is-info" name="description" v-model="post.description" type="text"
+            placeholder="Tell us more about this (description)" :disabled="sended"></textarea>
         </div>
       </div>
       <div class="field">
         <h2 class="subtitle">Post type</h2>
         <div class="control">
           <label class="radio">
-            <input
-              type="radio"
-              name="type"
-              v-model.number="post.type"
-              :value="0"
-              :disabled="sended"
-            />
-            <b> Episode</b> compilation (eg. a Drive with episodes)</label
-          ><br />
+            <input type="radio" name="type" v-model.number="post.type" :value="0" :disabled="sended" />
+            <b> Episode</b> compilation (eg. a Drive with episodes)</label><br />
           <label class="radio">
-            <input
-              type="radio"
-              name="type"
-              v-model.number="post.type"
-              :value="1"
-              :disabled="sended"
-            />
-            Another compilation (eg. a Drive with music videos)</label
-          ><br />
+            <input type="radio" name="type" v-model.number="post.type" :value="1" :disabled="sended" />
+            Another compilation (eg. a Drive with music videos)</label><br />
           <label class="radio">
-            <input
-              type="radio"
-              name="type"
-              v-model.number="post.type"
-              :value="2"
-              :disabled="sended"
-            />
-            Individual <b>episode</b></label
-          ><br />
+            <input type="radio" name="type" v-model.number="post.type" :value="2" :disabled="sended" />
+            Individual <b>episode</b></label><br />
           <label class="radio">
-            <input
-              type="radio"
-              name="type"
-              v-model.number="post.type"
-              :value="3"
-              :disabled="sended"
-            />
+            <input type="radio" name="type" v-model.number="post.type" :value="3" :disabled="sended" />
             Another individual material
           </label>
         </div>
       </div>
 
       <div class="field">
-        <p
-          class="control buttons is-right"
-          style="position: absolute; right: 12px"
-        >
+        <p class="control buttons is-right" style="position: absolute; right: 12px">
           <a @click="addMirror">
-            <button
-              class="button is-primary is-success is-responsive"
-              :disabled="sended || post.mirrors.length >= 10"
-            >
+            <button class="button is-primary is-success is-responsive" :disabled="sended || post.mirrors.length >= 10">
               Add mirror
             </button>
           </a>
@@ -109,52 +59,28 @@
         <h2 class="subtitle">Mirrors / Sources</h2>
         <h3>You can add up to 10 mirrors of the same content.</h3>
       </div>
-      <div
-        class="field has-addons"
-        v-for="(mirror, index) in post.mirrors"
-        :key="index"
-      >
+      <div class="field has-addons" v-for="(mirror, index) in post.mirrors" :key="index">
         <div class="control is-expanded">
-          <input
-            class="input is-link"
-            type="text"
-            placeholder="Mirror name"
-            v-model="mirror.name"
-            required
-            :disabled="sended"
-          />
+          <input class="input is-link" type="text" placeholder="Mirror name" v-model="mirror.name" required
+            :disabled="sended" />
         </div>
         <div class="control is-expanded">
-          <input
-            class="input is-link"
-            type="url"
-            placeholder="Source URL"
-            v-model="mirror.url"
-            required
-            :disabled="sended"
-          />
+          <input class="input is-link" type="url" placeholder="Source URL" v-model="mirror.url" required
+            :disabled="sended" />
         </div>
         <div v-if="post.mirrors.length > 1" class="control">
-          <a @click="removeMirror(index)"
-            ><button class="button is-danger" :disabled="sended">
+          <a @click="removeMirror(index)"><button class="button is-danger" :disabled="sended">
               Remove
-            </button></a
-          >
+            </button></a>
         </div>
       </div>
-      <br v-if="spanText !== 'Please wait...' || sended" />
       <span v-if="spanText !== 'Please wait...' || sended" class="form-span">{{
-        spanText
+      spanText
       }}</span>
       <br v-if="spanText !== 'Please wait...' || sended" />
       <div class="field">
         <div class="control buttons is-centered">
-          <input
-            class="button is-primary"
-            type="submit"
-            value="Submit"
-            :disabled="sended"
-          />
+          <input class="button is-primary" type="submit" value="Submit" :disabled="sended" />
           <button @click="goBack" class="button is-danger" :disabled="sended">
             Cancel
           </button>
@@ -164,7 +90,11 @@
   </div>
 </template>
 
-<style>
+<style scoped>
+.title {
+  margin-bottom: 2rem;
+}
+
 .form-span {
   padding: 3px;
   margin-top: 10px;

@@ -2,22 +2,11 @@
   <section class="hero" :class="'type-' + type" style="padding: 12px">
     <div class="hero-head" style="text-align: left">
       <strong style="position: absolute">{{ showType }}</strong>
-      <div
-        v-if="admin || userID === loggedID"
-        style="position: absolute; right: 12px"
-        class="buttons"
-      >
-        <router-link
-          :to="'/wubbzy-media/publish/' + _id"
-          class="button is-small is-link"
-        >
+      <div v-if="admin || userID === loggedID" style="position: absolute; right: 12px" class="buttons">
+        <router-link :to="'/wubbzy-media/publish/' + _id" class="button is-link is-responsive">
           Edit post
         </router-link>
-        <button
-          @click="deletePost"
-          class="button is-small is-danger"
-          :disabled="pressed"
-        >
+        <button @click="deletePost" class="button is-danger is-responsive" :disabled="pressed">
           Delete post
         </button>
       </div>
@@ -32,19 +21,20 @@
     </div>
     <div class="hero-foot">
       <div class="buttons">
-        <a
-          v-for="(mirror, index) in mirrors"
-          :key="index"
-          :href="mirror.url"
-          class="button is-small is-info"
-          target="_blank"
-        >
+        <a v-for="(mirror, index) in mirrors" :key="index" :href="mirror.url" class="button is-info is-responsive"
+          target="_blank">
           {{ mirror.name }}
         </a>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.hero {
+  border-radius: 1rem;
+}
+</style>
 
 <script>
 Array.apply();

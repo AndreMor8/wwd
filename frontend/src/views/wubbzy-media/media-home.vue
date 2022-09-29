@@ -1,59 +1,46 @@
 <template>
-  <h1 v-if="!logged" class="title main_title">
+  <h1 v-if="!logged" class="title">
     You must login with Discord on this website first.
   </h1>
-  <h1 v-else-if="!loaded" class="title main_title">Loading...</h1>
-  <h1 v-else-if="!canView" class="title main_title">
+  <h1 v-else-if="!loaded" class="title">Loading...</h1>
+  <h1 v-else-if="!canView" class="title">
     You must be verified on Wow Wow Discord to view this content.
   </h1>
   <div v-else>
-    <router-link
-      v-if="canPublish"
-      to="/wubbzy-media/publish"
-      style="right: 0; padding-right: 1em; padding-top: 1em; position: absolute"
-    >
-      <button class="button is-info is-light">New post</button>
-    </router-link>
-    <h1
-      class="birthday_title title main_title"
-      style="text-align: center; margin-bottom: 15px"
-    >
-      Wow! Wow! Wubbzy! multimedia
-    </h1>
+    <div class="box">
+      <h1 class="title">
+        Wow! Wow! Wubbzy! multimedia
+      </h1>
+      <router-link v-if="canPublish" to="/wubbzy-media/publish" class="button is-info is-light is-focused">
+        New post
+      </router-link>
+      <h2 v-if="!posts.length" class="subtitle" style="font-size: 1.5rem; margin-top: 10px;">
+        There are no contributions yet, although they are supposed to be here
+        now.
+      </h2>
+    </div>
     <div v-if="!!posts.length">
       <div class="block" v-for="post in posts" :key="post._id">
-          <mediaPost
-            :_id="post._id"
-            :userID="post.userID"
-            :title="post.title"
-            :description="post.description"
-            :mirrors="post.mirrors"
-            :type="post.type"
-            :admin="admin"
-          />
+        <mediaPost :_id="post._id" :userID="post.userID" :title="post.title" :description="post.description"
+          :mirrors="post.mirrors" :type="post.type" :admin="admin" />
       </div>
-    </div>
-    <div v-else>
-      <b
-        ><h2 class="subtitle" style="font-size: 2em">
-          There are no contributions yet, although they are supposed to be here
-          now.
-        </h2></b
-      >
     </div>
   </div>
 </template>
 
 <style>
 .type-0 {
-  background-color: rgb(255, 228, 108);
+  background-color: rgb(255, 235, 146);
 }
+
 .type-1 {
-  background-color: rgb(249, 238, 191);
+  background-color: rgb(255, 248, 215);
 }
+
 .type-2 {
   background-color: rgb(150, 239, 251);
 }
+
 .type-3 {
   background-color: rgb(220, 251, 255);
 }

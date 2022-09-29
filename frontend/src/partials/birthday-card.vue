@@ -9,25 +9,27 @@
       <div class="content">
         <p>
           <strong>{{ username }}</strong>
-          <small class="wwd_to_wubbzy_text">To: Wubbzy</small>
-          <br />
-          {{ card }}
+          <small class="wwd_to_wubbzy_text">To: Wubbzy</small><br />{{ card }}
         </p>
         <div v-if="!!additional">
           <strong>Additional</strong><br />{{ additional }}
         </div>
       </div>
-
-      <nav v-if="adminmode" class="level is-mobile">
-        <!-- in progress -->
-      </nav>
     </div>
   </article>
 </template>
 
-<style>
+<style scoped>
+.birthday {
+  text-align: left;
+}
+
 .wwd_to_wubbzy_text {
   padding-left: 0.5em;
+}
+
+.media-content {
+  overflow-wrap: anywhere;
 }
 </style>
 
@@ -44,9 +46,8 @@ export default {
   ],
   computed: {
     defaultAvatar() {
-      return `https://cdn.discordapp.com/embed/avatars/${
-        this.username.split("#")[1] % 5
-      }.png`;
+      return `https://cdn.discordapp.com/embed/avatars/${this.username.split("#")[1] % 5
+        }.png`;
     },
   },
 };

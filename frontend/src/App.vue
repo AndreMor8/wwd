@@ -1,16 +1,24 @@
 <template>
-  <div align="center">
+  <div class="container">
     <router-view v-if="loaded" />
-    <div v-else>
-      <h1 class="title main_title">{{ text }}</h1>
-    </div>
-    <footer v-if="loaded">
-      <navbar :logged="logged" :tag="user.tag"></navbar>
-    </footer>
+    <h1 v-else class="title">{{ text }}</h1>
   </div>
+  <footer v-if="loaded">
+    <navbar :logged="logged" :tag="user.tag"></navbar>
+  </footer>
 </template>
 
+<style scoped>
+.container {
+  padding: 1rem;
+}
+</style>
+
 <style>
+#app {
+  text-align: -webkit-center;
+}
+
 html {
   background: none !important;
 }
@@ -38,15 +46,8 @@ body {
   background-image: url("./assets/birthdaysubmit.webp");
 }
 
-.main_title {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  font-size: 3em;
-}
-
 footer {
   position: fixed;
-  float: inline-end;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -57,33 +58,15 @@ footer {
 }
 
 .box {
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  background-color: #fff9e0fa;
 }
 
 .field {
   margin: 1em;
 }
 
-#container {
-  margin: 1em;
-}
-
-.buttons.fix {
-  margin: auto;
-  padding: 10px;
-  margin-top: 10px;
-  display: block;
-}
-
-.buttons.fix a {
-  padding: 2px;
-}
-
-.birthday_title {
-  color: #f0e285;
-  -webkit-text-stroke: 1px black;
+.buttons {
+  justify-content: space-evenly;
 }
 
 .content {
