@@ -12,11 +12,11 @@
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "csurf": "^1.11.0",
-    "discord.js": "^13.10.3",
+    "discord.js": "^13.11.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "mongoose": "^6.5.3",
+    "mongoose": "^6.6.2",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
     "snowtransfer": "^0.5.5"
@@ -34,7 +34,7 @@
     "express"
   ],
   "devDependencies": {
-    "eslint": "^8.23.0",
-    "nodemon": "^2.0.19"
+    "eslint": "^8.24.0",
+    "nodemon": "^2.0.20"
   }
 }
