@@ -40,7 +40,7 @@ export default {
   methods: {
     getYears() {
       this.axios.get(`${window.apiDomain}/birthday-cards`).then((e) => {
-        this.available_years = e.data;
+        this.available_years = e.data?.sort((a, b) => a - b);
         this.button = e.data.some((a) => a.enabled);
         this.loaded = true;
       });
