@@ -12,9 +12,6 @@
     </div>
     <div class="navbar-menu" id="navMenu">
       <div class="navbar-start">
-        <a href="https://archive.wubbworld.xyz" class="navbar-item">
-          Archives
-        </a>
         <a href="https://discord.gg/5qx9ZcV" class="navbar-item">
           Server invite link
         </a>

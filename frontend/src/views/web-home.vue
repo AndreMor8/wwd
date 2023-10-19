@@ -16,8 +16,10 @@
         Wubbzy birthday cards
       </router-link>
       <router-link to="/games" class="button home-button is-link">Games</router-link>
-      <router-link to="/wubbzy-media" class="button home-button is-link is-light is-focused">Wubbzy media
-      </router-link>
+      <a href="https://archive.wubbworld.xyz/" class="button home-button is-success">Archives</a>
+      <a href="https://stream.wubbworld.xyz/" class="button home-button is-success">Stream Wubbzy episodes</a>
+      <router-link to="/wubbzy-media" class="button home-button is-link is-light is-focused">Wubbzy media (WWD level
+        2)</router-link>
     </div>
   </div>
   <div class="box">
