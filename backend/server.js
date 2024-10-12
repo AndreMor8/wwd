@@ -59,7 +59,7 @@ const app = express();
   //All requests handler
   app.use("*", function (req, res) {
     //A 405 for non-GET requests
-    if (req.method !== "GET") res.status(405).json({ status: 405, message: "Method not allowed!" });
+    if (req.method !== "GET") return res.status(405).json({ status: 405, message: "Method not allowed!" });
     // If self-serving static front-end pages, return index.html, otherwise just redirect
     res.status(404).json({ status: 404, message: "Not found" });
   });
